@@ -44,7 +44,7 @@
                     max-w-[38vw] sm:max-w-none truncate">
                         <svg class="w-4 h-4 sm:w-5 sm:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                            <path d="M3 9.5L12 3l9 6.5V21a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1V9.5z"></path>
+                            <path d="M3 9.5L12 3l9 6.5V21a1 1 0 0 1-1 1h-5v-7H9v7H4a 1 1 0 0 1-1-1V9.5z"></path>
                         </svg>
                         <span class="truncate">Home</span>
                     </a>
@@ -94,14 +94,20 @@
         </p>
 
         <!-- Form uses Arial only -->
-        <form id="apply-form" action="https://formsubmit.co/ajax/contact@nexusxperts.com" method="POST"
-            enctype="multipart/form-data" class="space-y-6 bg-white/70 dark:bg-white/5 rounded-xl p-6 sm:p-8"
+        <!-- IMPORTANT: use non-AJAX endpoint + target hidden iframe to reliably send attachments -->
+        <form id="apply-form" action="https://formsubmit.co/contact@nexusxperts.com" method="POST"
+            target="fs-frame" enctype="multipart/form-data"
+            class="space-y-6 bg-white/70 dark:bg-white/5 rounded-xl p-6 sm:p-8"
             style="font-family: Arial, Helvetica, sans-serif;" novalidate>
+
             <!-- FormSubmit controls -->
             <input type="hidden" name="_subject" id="_subject" value="New Job Application – NexusXperts" />
             <input type="hidden" name="_template" value="table" />
             <input type="hidden" name="_captcha" value="false" />
             <input type="hidden" name="_url" value="https://nexusxperts.com/apply" />
+            <!-- Optional: fallback redirect if the form is ever submitted without the iframe -->
+            <input type="hidden" name="_next" value="https://nexusxperts.com/thanks.html" />
+
             <!-- Honeypot -->
             <div class="hidden" aria-hidden="true">
                 <label for="_honey">Do not fill this out</label>
@@ -280,6 +286,9 @@
             <!-- SR-only live region -->
             <p id="form-status" class="sr-only" aria-live="polite"></p>
         </form>
+
+        <!-- Hidden iframe target for native multipart submission (keeps page in place) -->
+        <iframe name="fs-frame" id="fs-frame" title="FormSubmit" style="display:none;"></iframe>
     </main>
 
     <footer class="mt-auto border-t border-white/20">
@@ -325,6 +334,8 @@
         const status = $("form-status");
         const submitBtn = $("submitBtn");
         const submitText = submitBtn.querySelector("span");
+        const iframe = $("fs-frame");
+        let inFlight = false;
 
         function setErr(id, msg) {
             const el = $(id); const err = document.querySelector(`[data-err="${id}"]`);
@@ -333,7 +344,6 @@
             if (el.tagName !== "FIELDSET") {
                 el.classList.add("border-red-500", "ring-2", "ring-red-500");
             }
-
             err.textContent = msg; err.classList.remove("hidden");
         }
         function clearErr(id) {
@@ -343,7 +353,6 @@
             if (el.tagName !== "FIELDSET") {
                 el.classList.remove("border-red-500", "ring-2", "ring-red-500");
             }
-
             err.textContent = ""; err.classList.add("hidden");
         }
         function urlParam(name) {
@@ -496,7 +505,7 @@
         const validators = {
             first_name: v => v.length > 0 || "This field is required.",
             last_name: v => v.length > 0 || "This field is required.",
-            email: v => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v) || "Enter a valid email.",
+            email: v => /^[^\s@]+@[^\s@]{1,}\.[^\s@]{2,}$/.test(v) || "Enter a valid email.",
             phone_cc: v => /^\+\d{1,4}$/.test(v) || "Use + and 1–4 digits (e.g., +1, +44, +92).",
             phone: v => /^\d{6,15}$/.test(v) || "Enter 6–15 digits (no spaces).",
             experience: v => (v !== "" && Number(v) >= 0) || "Enter a valid number.",
@@ -586,14 +595,13 @@
         });
 
         // ---------- Input filters: numbers-only behavior ----------
-        // Prevent invalid chars in type=number (disallow e/E/+/-; allow '.' only where step has decimal)
         function guardNumberInput(ev) {
             const el = ev.target;
             if (el.tagName !== "INPUT" || el.type !== "number") return;
             const k = ev.key;
             const stepAttr = el.getAttribute("step") || "";
-            the_allowDot = stepAttr.includes(".");
-            const blocked = ["e", "E", "+", "-"].includes(k) || (!the_allowDot && k === ".");
+            const allowDot = stepAttr.includes(".");
+            const blocked = ["e", "E", "+", "-"].includes(k) || (!allowDot && k === ".");
             if (blocked) ev.preventDefault();
         }
         document.addEventListener("keydown", guardNumberInput, true);
@@ -616,8 +624,11 @@
         }
         $("availability")?.addEventListener("focus", setAvailabilityMinOnFocus);
 
-        // ---------- Submit (AJAX) ----------
-        form.addEventListener("submit", async (e) => {
+        // ---------- Native submit to hidden iframe (reliable attachments) ----------
+        // We still run the same validation, then submit the form natively.
+        form.addEventListener("submit", (e) => {
+            // run our own validation first
+            // (do NOT preventDefault if valid; we call form.submit() to native-post to iframe)
             e.preventDefault();
 
             // bot honeypot
@@ -630,47 +641,42 @@
             if (!validateRoleSpecific()) ok = false;
             if (!ok) { toast("Please fix the highlighted fields and try again.", "error"); scrollToFirstError(); return; }
 
-            // Build FormData (POST to FormSubmit)
-            const data = new FormData(form);
-            data.append("Phone (Full)", `${$("phone_cc").value.trim()} ${$("phone").value.trim()}`);
-
-            // Dynamic subject with role
+            // Set combined phone and dynamic subject
+            $("phone_full").value = `${$("phone_cc").value.trim()} ${$("phone").value.trim()}`;
             const subj = document.querySelector('#_subject');
             if (subj) subj.value = `New Job Application – ${role} – NexusXperts`;
 
-            // Loading
+            // Loading UI
+            if (inFlight) return; // guard against double clicks
+            inFlight = true;
             submitBtn.disabled = true;
             submitBtn.classList.add("opacity-70", "cursor-not-allowed");
             submitText.textContent = "Sending...";
             status.textContent = "";
 
-            try {
-                const res = await fetch(form.action, {
-                    method: "POST",
-                    mode: "cors",
-                    body: data,
-                    headers: { Accept: "application/json" }
-                });
+            // Submit natively to the iframe
+            form.submit();
+        });
 
-                if (res.ok) {
-                    toast("Application submitted successfully. Thank you!", "success");
-                    status.textContent = "Your application has been submitted."; // SR only
-                    form.reset();
-                    $("phone_cc").value = "+92"; // reset default
-                    setAvailabilityMin(); // reapply min and clear past values
-                } else {
-                    let msg = `Submission failed (${res.status}). Please try again.`;
-                    try { const j = await res.json(); if (j?.message || j?.error) msg = j.message || j.error; } catch { }
-                    toast(msg, "error");
-                    status.textContent = msg; // SR only
-                }
-            } catch (err) {
-                toast("Network error. Please check your connection.", "warn");
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.classList.remove("opacity-70", "cursor-not-allowed");
-                submitText.textContent = "Submit Application";
-            }
+        // When the iframe loads (either success or error page from FormSubmit),
+        // reset UI. We can't read cross-origin content, so show a success toast.
+        // If you want stricter detection, switch to a custom _next URL on your domain and inspect it.
+        iframe.addEventListener("load", () => {
+            if (!inFlight) return;
+            inFlight = false;
+
+            // Basic heuristic: assume success if we got a load event (FormSubmit returns a 200 HTML page).
+            toast("Application submitted successfully. Thank you!", "success");
+            status.textContent = "Your application has been submitted.";
+
+            // Reset the form and UI
+            form.reset();
+            $("phone_cc").value = "+92";
+            setAvailabilityMin();
+
+            submitBtn.disabled = false;
+            submitBtn.classList.remove("opacity-70", "cursor-not-allowed");
+            submitText.textContent = "Submit Application";
         });
     </script>
 </body>
