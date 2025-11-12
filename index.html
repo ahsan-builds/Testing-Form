@@ -1,26 +1,22 @@
 <!doctype html>
 <html lang="en" class="scroll-smooth">
-
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>NexusXperts</title>
 
-  <!-- Tailwind -->
   <link rel="stylesheet" href="output.css" />
-  <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="icon" href="Assets/Logo.png" />
 
   <script>
-    /* Prevent dark-mode FOUC */
     try {
       const m = localStorage.getItem("theme");
       if (m === "dark" || (!m && matchMedia("(prefers-color-scheme: dark)").matches)) {
         document.documentElement.classList.add("dark");
       }
-    } catch { }
+    } catch {}
   </script>
 </head>
 
@@ -71,13 +67,14 @@
       Please complete the application below. Fields may change based on the role.
     </p>
 
-    <!-- IMPORTANT: Standard endpoint + native submit (for actual file attachments) -->
+    <!-- IMPORTANT: native POST (no AJAX/iframe) so attachments arrive -->
     <form id="apply-form"
           action="https://formsubmit.co/contact@nexusxperts.com"
           method="POST"
           enctype="multipart/form-data"
           class="space-y-6 bg-white/70 dark:bg-white/5 rounded-xl p-6 sm:p-8"
-          style="font-family: Arial, Helvetica, sans-serif;" novalidate>
+          style="font-family: Arial, Helvetica, sans-serif;"
+          novalidate>
 
       <!-- FormSubmit controls -->
       <input type="hidden" name="_subject" id="_subject" value="New Job Application – NexusXperts" />
@@ -186,7 +183,7 @@
         <input id="resume_file" name="attachment" type="file" required
                accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                class="block w-full border rounded px-3 py-2 bg-transparent border-gray-300 dark:border-gray-600" />
-        <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Max 10MB.</p>
+        <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Max 5MB total (FormSubmit limit).</p>
         <p data-err="resume_file" class="mt-1 text-xs text-red-600 hidden"></p>
       </div>
 
@@ -224,8 +221,7 @@
       <div class="flex items-start gap-3">
         <input id="consent" name="Consent" type="checkbox" value="I agree" required
                class="mt-1 h-4 w-4 border border-gray-300 dark:border-gray-600 rounded" />
-        <label for="consent" class="text-sm">I agree my information may be used to evaluate my application in
-          accordance with NexusXperts’ privacy policy. <span class="text-red-600">*</span></label>
+        <label for="consent" class="text-sm">I agree my information may be used to evaluate my application in accordance with NexusXperts’ privacy policy. <span class="text-red-600">*</span></label>
       </div>
       <p data-err="consent" class="mt-1 text-xs text-red-600 hidden"></p>
 
@@ -239,7 +235,6 @@
         <i class="fa-solid fa-paper-plane" aria-hidden="true"></i>
       </button>
 
-      <!-- SR-only live region -->
       <p id="form-status" class="sr-only" aria-live="polite"></p>
     </form>
   </main>
@@ -251,16 +246,15 @@
   </footer>
 
   <script>
-    // ---------- Toast ----------
+    // ----- Toast -----
     function toast(message, type = "info") {
       const root = document.getElementById("toast-root");
       const el = document.createElement("div");
-      const accents = { success: "bg-emerald-500", error: "bg-red-500", warn: "bg-amber-500", info: "bg-sky-500" };
+      const accents = { success:"bg-emerald-500", error:"bg-red-500", warn:"bg-amber-500", info:"bg-sky-500" };
       el.className = [
-        "pointer-events-auto",
-        "bg-[#263d83] text-white", "dark:bg-white dark:text-[#263d83]",
-        "rounded-xl shadow-lg border", "border-white/30 dark:border-[#263d83]/20",
-        "flex items-start gap-3", "w-[min(92vw,420px)] px-4 py-3",
+        "pointer-events-auto","bg-[#263d83] text-white","dark:bg-white dark:text-[#263d83]",
+        "rounded-xl shadow-lg border","border-white/30 dark:border-[#263d83]/20",
+        "flex items-start gap-3","w-[min(92vw,420px)] px-4 py-3",
         "opacity-0 translate-y-2 transition-all duration-200 ease-out"
       ].join(" ");
       el.innerHTML = `
@@ -276,12 +270,13 @@
       root.appendChild(el);
       requestAnimationFrame(() => el.classList.remove("opacity-0", "translate-y-2"));
       setTimeout(() => {
-        if (!root.contains(el)) return; el.classList.add("opacity-0", "translate-y-2");
+        if (!root.contains(el)) return;
+        el.classList.add("opacity-0", "translate-y-2");
         setTimeout(() => root.contains(el) && root.removeChild(el), 180);
       }, 5000);
     }
 
-    // ---------- Helpers ----------
+    // ----- Helpers -----
     const $ = (id) => document.getElementById(id);
     const form = $("apply-form");
     const status = $("form-status");
@@ -292,31 +287,28 @@
       const el = $(id); const err = document.querySelector(`[data-err="${id}"]`);
       if (!el || !err) return;
       el.setAttribute("aria-invalid", "true");
-      if (el.tagName !== "FIELDSET") el.classList.add("border-red-500", "ring-2", "ring-red-500");
+      if (el.tagName !== "FIELDSET") el.classList.add("border-red-500","ring-2","ring-red-500");
       err.textContent = msg; err.classList.remove("hidden");
     }
     function clearErr(id) {
       const el = $(id); const err = document.querySelector(`[data-err="${id}"]`);
       if (!el || !err) return;
       el.removeAttribute("aria-invalid");
-      if (el.tagName !== "FIELDSET") el.classList.remove("border-red-500", "ring-2", "ring-red-500");
+      if (el.tagName !== "FIELDSET") el.classList.remove("border-red-500","ring-2","ring-red-500");
       err.textContent = ""; err.classList.add("hidden");
     }
-    function urlParam(name) {
-      const p = new URLSearchParams(location.search);
-      return p.get(name) || "";
-    }
+    function urlParam(name){ return new URLSearchParams(location.search).get(name) || ""; }
     function scrollToFirstError() {
       const firstInvalid = document.querySelector('[aria-invalid="true"]');
       const firstErrNote = document.querySelector('[data-err]:not(.hidden)');
       const target = firstInvalid || firstErrNote;
-      if (target && typeof target.scrollIntoView === "function") {
-        target.scrollIntoView({ behavior: "smooth", block: "center" });
-        if (firstInvalid && typeof firstInvalid.focus === "function") firstInvalid.focus({ preventScroll: true });
+      if (target?.scrollIntoView) {
+        target.scrollIntoView({ behavior:"smooth", block:"center" });
+        if (firstInvalid?.focus) firstInvalid.focus({ preventScroll:true });
       }
     }
 
-    // ---------- Role-driven UI ----------
+    // ----- Role-driven UI -----
     const role = decodeURIComponent(urlParam("role") || "General Application");
     $("role").value = role;
     $("page-title").textContent = role;
@@ -329,7 +321,7 @@
         <fieldset id="skills" role="group" aria-required="true" class="border-0 p-0 m-0 rounded-xl">
           <legend class="font-semibold mb-2">Tech Stack (check all that apply) <span class="text-red-600">*</span></legend>
           <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-sm">
-            ${["React", "Next.js", "TypeScript", "Node.js", "Python", "FastAPI", "Django", "PostgreSQL", "MySQL", "Docker", "Kubernetes", "AWS", "GCP", "CI/CD"].map(x => `
+            ${["React","Next.js","TypeScript","Node.js","Python","FastAPI","Django","PostgreSQL","MySQL","Docker","Kubernetes","AWS","GCP","CI/CD"].map(x => `
               <label class="inline-flex items-center gap-2">
                 <input type="checkbox" name="Skills" value="${x}" class="h-4 w-4 border-gray-300 dark:border-gray-600">
                 <span>${x}</span>
@@ -354,7 +346,7 @@
         <fieldset id="be_skills" role="group" aria-required="true" class="border-0 p-0 m-0 rounded-xl">
           <legend class="font-semibold mb-2">Backend Experience (check all that apply) <span class="text-red-600">*</span></legend>
           <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-sm">
-            ${["FastAPI", "Django REST", "Celery", "Redis", "RabbitMQ", "PostgreSQL", "SQLAlchemy", "gRPC", "Auth (JWT/OAuth)", "Docker", "Kubernetes", "AWS", "GCP"].map(x => `
+            ${["FastAPI","Django REST","Celery","Redis","RabbitMQ","PostgreSQL","SQLAlchemy","gRPC","Auth (JWT/OAuth)","Docker","Kubernetes","AWS","GCP"].map(x => `
               <label class="inline-flex items-center gap-2">
                 <input type="checkbox" name="Backend Skills" value="${x}" class="h-4 w-4 border-gray-300 dark:border-gray-600">
                 <span>${x}</span>
@@ -380,7 +372,7 @@
         <fieldset id="seo_skills" role="group" aria-required="true" class="border-0 p-0 m-0 rounded-xl">
           <legend class="font-semibold mb-2">Core Competencies <span class="text-red-600">*</span></legend>
           <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-sm">
-            ${["Technical SEO", "On-Page SEO", "Off-Page SEO", "GA4", "GSC", "GTM", "Google Ads (Search)", "Shopping Ads", "Display/Video", "Keyword Research", "Link Building", "Local SEO"].map(x => `
+            ${["Technical SEO","On-Page SEO","Off-Page SEO","GA4","GSC","GTM","Google Ads (Search)","Shopping Ads","Display/Video","Keyword Research","Link Building","Local SEO"].map(x => `
               <label class="inline-flex items-center gap-2">
                 <input type="checkbox" name="SEO Skills" value="${x}" class="h-4 w-4 border-gray-300 dark:border-gray-600">
                 <span>${x}</span>
@@ -417,47 +409,42 @@
         <p data-err="gen_primary" class="mt-1 text-xs text-red-600 hidden"></p>
       </div>`;
 
-    // ---------- Date min (today) ----------
+    // ----- Date min -----
     function setAvailabilityMin() {
       const el = document.getElementById('availability');
       if (!el) return;
       const pad = n => String(n).padStart(2, '0');
       const now = new Date();
-      const yyyy = now.getFullYear();
-      const mm = pad(now.getMonth() + 1);
-      const dd = pad(now.getDate());
-      const today = `${yyyy}-${mm}-${dd}`;
+      const today = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}`;
       el.setAttribute('min', today);
       if (el.value && el.value < today) el.value = today;
     }
     setAvailabilityMin();
-    document.addEventListener('visibilitychange', () => {
-      if (document.visibilityState === 'visible') setAvailabilityMin();
-    });
+    document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') setAvailabilityMin(); });
     document.getElementById('availability')?.addEventListener('input', (e) => {
       const min = e.target.getAttribute('min') || '';
       if (min && e.target.value && e.target.value < min) e.target.value = min;
     });
 
-    // ---------- Validation ----------
+    // ----- Validation rules -----
     const validators = {
       first_name: v => v.length > 0 || "This field is required.",
-      last_name: v => v.length > 0 || "This field is required.",
-      email: v => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v) || "Enter a valid email.",
-      phone_cc: v => /^\+\d{1,4}$/.test(v) || "Use + and 1–4 digits (e.g., +1, +44, +92).",
-      phone: v => /^\d{6,15}$/.test(v) || "Enter 6–15 digits (no spaces).",
+      last_name:  v => v.length > 0 || "This field is required.",
+      email:      v => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v) || "Enter a valid email.",
+      phone_cc:   v => /^\+\d{1,4}$/.test(v) || "Use + and 1–4 digits (e.g., +1, +44, +92).",
+      phone:      v => /^\d{6,15}$/.test(v) || "Enter 6–15 digits (no spaces).",
       experience: v => (v !== "" && Number(v) >= 0) || "Enter a valid number.",
       availability: v => {
         if (!v) return "This field is required.";
-        const today = new Date(); today.setHours(0, 0, 0, 0);
+        const today = new Date(); today.setHours(0,0,0,0);
         const d = new Date(v); return d >= today || "Date cannot be in the past.";
       },
-      location: v => v.length > 0 || "This field is required.",
-      linkedin: v => (!v || /^https?:\/\//i.test(v)) || "Enter a valid URL.",
-      portfolio: v => (!v || /^https?:\/\//i.test(v)) || "Enter a valid URL.",
-      salary: v => (/^\d+$/.test(v.trim())) || "Enter a numeric value (digits only).",
+      location:   v => v.length > 0 || "This field is required.",
+      linkedin:   v => (!v || /^https?:\/\//i.test(v)) || "Enter a valid URL.",
+      portfolio:  v => (!v || /^https?:\/\//i.test(v)) || "Enter a valid URL.",
+      salary:     v => (/^\d+$/.test(v.trim())) || "Enter a numeric value (digits only).",
       cover_letter: v => v.length > 0 || "This field is required.",
-      consent: v => v === true || "Consent is required.",
+      consent:    v => v === true || "Consent is required.",
       recent_projects: v => v.split(/\n/).filter(l => l.trim().length > 0).length >= 2 || "List at least 2 projects.",
       resume_file: file => {
         if (!file) return "Resume is required.";
@@ -467,25 +454,12 @@
           "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
         ];
         if (!ok.includes(file.type)) return "Allowed: PDF/DOC/DOCX.";
-        if (file.size > 10 * 1024 * 1024) return "Max file size is 10MB.";
+        // FormSubmit total upload limit: 5MB
+        if (file.size > 5 * 1024 * 1024) return "Max file size is 5MB.";
         return true;
       }
     };
 
-    function setErr(id, msg) {
-      const el = $(id); const err = document.querySelector(`[data-err="${id}"]`);
-      if (!el || !err) return;
-      el.setAttribute("aria-invalid", "true");
-      if (el.tagName !== "FIELDSET") el.classList.add("border-red-500", "ring-2", "ring-red-500");
-      err.textContent = msg; err.classList.remove("hidden");
-    }
-    function clearErr(id) {
-      const el = $(id); const err = document.querySelector(`[data-err="${id}"]`);
-      if (!el || !err) return;
-      el.removeAttribute("aria-invalid");
-      if (el.tagName !== "FIELDSET") el.classList.remove("border-red-500", "ring-2", "ring-red-500");
-      err.textContent = ""; err.classList.add("hidden");
-    }
     function validateField(id) {
       clearErr(id);
       const el = $(id);
@@ -497,52 +471,66 @@
       if (res !== true) { setErr(id, res); return false; }
       return true;
     }
+
     function validateRoleSpecific() {
       if (role === "Full Stack Engineer") {
         const any = [...document.querySelectorAll('input[name="Skills"]:checked')].length > 0;
-        if (!any) { setErr("skills", "Select at least one skill."); } else { clearErr("skills"); }
-        if (!($("fs_strong")?.value.trim())) { setErr("fs_strong", "This field is required."); } else { clearErr("fs_strong"); }
+        if (!any) setErr("skills","Select at least one skill."); else clearErr("skills");
+        if (!($("fs_strong")?.value.trim())) { setErr("fs_strong","This field is required."); } else { clearErr("fs_strong"); }
         return any && Boolean($("fs_strong")?.value.trim());
       } else if (role === "Python Backend Developer") {
         const any = [...document.querySelectorAll('input[name="Backend Skills"]:checked')].length > 0;
-        if (!any) { setErr("be_skills", "Select at least one skill."); } else { clearErr("be_skills"); }
+        if (!any) setErr("be_skills","Select at least one skill."); else clearErr("be_skills");
         const v = $("be_async")?.value;
-        if (v === "" || Number(v) < 0) { setErr("be_async", "Enter a valid number."); } else { clearErr("be_async"); }
+        if (v === "" || Number(v) < 0) { setErr("be_async","Enter a valid number."); } else { clearErr("be_async"); }
         return any && !(v === "" || Number(v) < 0);
       } else if (role === "SEO & Google Ads Specialist") {
         const any = [...document.querySelectorAll('input[name="SEO Skills"]:checked')].length > 0;
-        if (!any) { setErr("seo_skills", "Select at least one competency."); } else { clearErr("seo_skills"); }
+        if (!any) setErr("seo_skills","Select at least one competency."); else clearErr("seo_skills");
         const b = $("ads_budget")?.value;
-        if (b === "" || Number(b) < 0) { setErr("ads_budget", "Enter a valid budget."); } else { clearErr("ads_budget"); }
+        if (b === "" || Number(b) < 0) { setErr("ads_budget","Enter a valid budget."); } else { clearErr("ads_budget"); }
         const caseUrl = $("seo_case")?.value.trim();
-        if (caseUrl && !/^https?:\/\//i.test(caseUrl)) { setErr("seo_case", "Enter a valid URL."); } else { clearErr("seo_case"); }
+        if (caseUrl && !/^https?:\/\//i.test(caseUrl)) { setErr("seo_case","Enter a valid URL."); } else { clearErr("seo_case"); }
         return any && !(b === "" || Number(b) < 0) && !(caseUrl && !/^https?:\/\//i.test(caseUrl));
       } else {
-        if (!($("gen_primary")?.value.trim())) { setErr("gen_primary", "This field is required."); return false; }
+        if (!($("gen_primary")?.value.trim())) { setErr("gen_primary","This field is required."); return false; }
         clearErr("gen_primary");
         return true;
       }
     }
 
-    // Clear-on-type bindings
+    // realtime clears
     ["first_name","last_name","email","phone_cc","phone","experience","availability","location","linkedin","portfolio","salary","cover_letter","recent_projects"]
       .forEach(id => { $(id)?.addEventListener("input", () => clearErr(id)); $(id)?.addEventListener("change", () => clearErr(id)); });
     $("resume_file")?.addEventListener("change", () => clearErr("resume_file"));
     $("consent")?.addEventListener("change", () => clearErr("consent"));
     document.addEventListener("change", (e) => {
       if (e.target?.name === "Skills") {
-        if ([...document.querySelectorAll('input[name="Skills"]:checked')].length) clearErr("skills");
+        const any = [...document.querySelectorAll('input[name="Skills"]:checked')].length > 0;
+        if (any) clearErr("skills");
       }
       if (e.target?.name === "Backend Skills") {
-        if ([...document.querySelectorAll('input[name="Backend Skills"]:checked')].length) clearErr("be_skills");
+        const any = [...document.querySelectorAll('input[name="Backend Skills"]:checked')].length > 0;
+        if (any) clearErr("be_skills");
       }
       if (e.target?.name === "SEO Skills") {
-        if ([...document.querySelectorAll('input[name="SEO Skills"]:checked')].length) clearErr("seo_skills");
+        const any = [...document.querySelectorAll('input[name="SEO Skills"]:checked')].length > 0;
+        if (any) clearErr("seo_skills");
       }
     });
 
-    // Input filters
-    function digitsOnlyInput(el) { el.value = (el.value || "").replace(/\D+/g, ""); }
+    // number input guard
+    document.addEventListener("keydown", (ev) => {
+      const el = ev.target;
+      if (el.tagName !== "INPUT" || el.type !== "number") return;
+      const k = ev.key;
+      const allowDot = (el.getAttribute("step") || "").includes(".");
+      const blocked = ["e","E","+","-"].includes(k) || (!allowDot && k === ".");
+      if (blocked) ev.preventDefault();
+    }, true);
+
+    // simple input filters
+    const digitsOnlyInput = (el) => el.value = (el.value || "").replace(/\D+/g, "");
     $("salary")?.addEventListener("input", () => digitsOnlyInput($("salary")));
     $("phone")?.addEventListener("input", () => digitsOnlyInput($("phone")));
     $("phone_cc")?.addEventListener("input", () => {
@@ -552,12 +540,12 @@
       $("phone_cc").value = v.slice(0, 5);
     });
 
-    // Submit: validate; if invalid prevent; if valid, allow native multipart POST
+    // ----- Submit: DO NOT prevent default; do native POST so file is attached -----
     form.addEventListener("submit", (e) => {
-      // honeypot (bots)
+      // honeypot
       if (form.querySelector('input[name="_honey"]')?.value) { e.preventDefault(); return; }
 
-      // run validation
+      // validate all
       const ids = ["first_name","last_name","email","phone_cc","phone","experience","availability","location","linkedin","portfolio","salary","recent_projects","cover_letter","resume_file","consent"];
       let ok = true;
       ids.forEach(id => { if (!validateField(id)) ok = false; });
@@ -570,17 +558,17 @@
         return;
       }
 
-      // enrich fields before native submit
+      // set combined phone + subject just before native submit
       $("phone_full").value = `${$("phone_cc").value.trim()} ${$("phone").value.trim()}`;
       const subj = document.querySelector('#_subject');
       if (subj) subj.value = `New Job Application – ${role} – NexusXperts`;
 
-      // show quick visual feedback while browser posts
+      // Let the browser submit natively (no preventDefault) — FormSubmit will attach the file
+      // UX hint (optional, as page will navigate)
       submitBtn.disabled = true;
-      submitBtn.classList.add("opacity-70", "cursor-not-allowed");
-      submitText.textContent = "Sending...";
-      status.textContent = "";
-      // do NOT preventDefault — let the browser submit natively (this is the key for attachments)
+      submitBtn.classList.add("opacity-70","cursor-not-allowed");
+      submitText.textContent = "Sending…";
+      status.textContent = "Submitting application…";
     });
   </script>
 </body>
