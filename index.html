@@ -2,339 +2,380 @@
 <html lang="en" class="scroll-smooth">
 
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>NexusXperts</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>NexusXperts</title>
 
-  <!-- Tailwind -->
-  <link rel="stylesheet" href="output.css" />
-  <!-- Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    <!-- Tailwind -->
+    <link rel="stylesheet" href="output.css" />
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="icon" href="Assets/Logo.png" />
+    <link rel="icon" href="Assets/Logo.png" />
 
-  <script>
-    /* Prevent dark-mode FOUC */
-    try {
-      const m = localStorage.getItem("theme");
-      if (m === "dark" || (!m && matchMedia("(prefers-color-scheme: dark)").matches)) {
-        document.documentElement.classList.add("dark");
-      }
-    } catch {}
-  </script>
+    <script>
+        /* Prevent dark-mode FOUC */
+        try {
+            const m = localStorage.getItem("theme");
+            if (m === "dark" || (!m && matchMedia("(prefers-color-scheme: dark)").matches)) {
+                document.documentElement.classList.add("dark");
+            }
+        } catch { }
+    </script>
 </head>
 
 <body class="bg-nexus-light dark:bg-nexus-gradient text-[#263d83] dark:text-white min-h-screen flex flex-col">
-  <script src="Theme.js"></script>
+    <script src="Theme.js"></script>
 
-  <!-- Toast root -->
-  <div id="toast-root" class="fixed top-4 right-4 z-[100] space-y-3 pointer-events-none"></div>
+    <!-- Toast root -->
+    <div id="toast-root" class="fixed top-4 right-4 z-[100] space-y-3 pointer-events-none"></div>
 
-  <!-- Breadcrumb -->
-  <div class="fixed z-40 left-2 sm:left-5 mt-5">
-    <nav aria-label="Breadcrumb" class="bg-black/30 dark:bg-white/10 backdrop-blur-md px-2.5 py-1.5 sm:px-4 sm:py-2 border border-white/15">
-      <ol class="flex items-center gap-1.5 sm:gap-3 text-xs sm:text-base text-zinc-100 dark:text-zinc-200 max-w-[92vw] sm:max-w-none">
-        <li class="min-w-0">
-          <a href="index.html" class="inline-flex items-center gap-1.5 sm:gap-2 hover:text-white dark:hover:text-white font-medium max-w-[38vw] sm:max-w-none truncate">
-            <svg class="w-4 h-4 sm:w-5 sm:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M3 9.5L12 3l9 6.5V21a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1V9.5z"></path>
-            </svg>
-            <span class="truncate">Home</span>
-          </a>
-        </li>
-        <li aria-hidden="true" class="px-0.5 sm:px-0 mt-0.9">
-          <svg class="w-3.5 h-4 sm:w-4 sm:h-5 text-zinc-300 dark:text-zinc-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="9 18 15 12 9 6"></polyline>
-          </svg>
-        </li>
-        <li class="min-w-0">
-          <a href="Careers.html#jobs" class="inline-flex items-center gap-1.5 sm:gap-2 hover:text-white dark:hover:text-white font-medium max-w-[38vw] sm:max-w-none truncate">
-            <span class="truncate">Careers</span>
-          </a>
-        </li>
-        <li aria-hidden="true" class="px-0.5 sm:px-0 mt-1">
-          <svg class="w-3.5 h-4 sm:w-4 sm:h-5 text-zinc-300 dark:text-zinc-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="9 18 15 12 9 6"></polyline>
-          </svg>
-        </li>
-        <li class="font-semibold text-white dark:text-zinc-100 tracking-wide min-w-0">
-          <span id="crumb-role" class="truncate max-w-[44vw] sm:max-w-none">Apply</span>
-        </li>
-      </ol>
-    </nav>
-  </div>
+    <!-- Compact, safe-area glassmorphism breadcrumb -->
+    <div class="fixed z-40 left-2 sm:left-5 mt-5">
+        <nav aria-label="Breadcrumb" class="bg-black/30 dark:bg-white/10 backdrop-blur-md
+                px-2.5 py-1.5 sm:px-4 sm:py-2
+                border border-white/15">
+            <ol class="flex items-center gap-1.5 sm:gap-3
+                 text-xs sm:text-base
+                 text-zinc-100 dark:text-zinc-200 max-w-[92vw] sm:max-w-none">
+                <!-- Home -->
+                <li class="min-w-0">
+                    <a href="index.html" class="inline-flex items-center gap-1.5 sm:gap-2 hover:text-white dark:hover:text-white font-medium
+                    max-w-[38vw] sm:max-w-none truncate">
+                        <svg class="w-4 h-4 sm:w-5 sm:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M3 9.5L12 3l9 6.5V21a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1V9.5z"></path>
+                        </svg>
+                        <span class="truncate">Home</span>
+                    </a>
+                </li>
 
-  <!-- Main -->
-  <main class="w-full mx-auto max-w-3xl px-4 sm:px-6 py-10 pt-16 sm:pt-10 mt-12 sm:mt-16">
-    <h1 id="page-title" class="text-2xl sm:text-3xl font-bold mb-2">Application</h1>
-    <p id="page-sub" class="mb-8 text-sm sm:text-base dark:text-gray-300">
-      Please complete the application below. Fields may change based on the role.
-    </p>
+                <!-- Sep -->
+                <li aria-hidden="true" class="px-0.5 sm:px-0 mt-0.9">
+                    <svg class="w-3.5 h-4 sm:w-4 sm:h-5 text-zinc-300 dark:text-zinc-100" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </li>
 
-    <h1>
-      New Form New Form New Form New Form New Form
-    </h1>
+                <!-- Careers -->
+                <li class="min-w-0">
+                    <a href="Careers.html#jobs" class="inline-flex items-center gap-1.5 sm:gap-2 hover:text-white dark:hover:text-white font-medium
+                    max-w-[38vw] sm:max-w-none truncate">
+                        <span class="truncate">Careers</span>
+                    </a>
+                </li>
 
-    <!-- IMPORTANT: action is #; we use JS to send via EmailJS (no redirects) -->
-    <form id="apply-form" action="#" method="POST" enctype="multipart/form-data"
-          class="space-y-6 bg-white/70 dark:bg-white/5 rounded-xl p-6 sm:p-8"
-          style="font-family: Arial, Helvetica, sans-serif;" novalidate>
+                <!-- Sep -->
+                <li aria-hidden="true" class="px-0.5 sm:px-0 mt-1">
+                    <svg class="w-3.5 h-4 sm:w-4 sm:h-5 text-zinc-300 dark:text-zinc-100" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </li>
 
-      <!-- (Optional) kept for continuity — not used by EmailJS -->
-      <input type="hidden" name="_subject" id="_subject" value="New Job Application – NexusXperts" />
-      <input type="hidden" name="_template" value="basic" />
-      <input type="hidden" name="_captcha" value="false" />
-      <input type="hidden" name="_url" value="https://nexusxperts.com/apply" />
-
-      <!-- Honeypot -->
-      <div class="hidden" aria-hidden="true">
-        <label for="_honey">Do not fill this out</label>
-        <input type="text" id="_honey" name="_honey" tabindex="-1" autocomplete="off" />
-      </div>
-
-      <!-- Role (locked) -->
-      <div>
-        <label for="role" class="block text-sm mb-1">Position Applying For <span class="text-red-600">*</span></label>
-        <input id="role" name="Position" type="text" readonly
-               class="w-full h-12 px-4 bg-zinc-100 dark:bg-white/10 border border-gray-300 dark:border-gray-600 rounded-xl" />
-      </div>
-
-      <!-- Name -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-        <div>
-          <label for="first_name" class="block text-sm mb-1">First Name <span class="text-red-600">*</span></label>
-          <input id="first_name" name="First Name" type="text" required placeholder="Enter first name" autocomplete="given-name"
-                 class="w-full h-12 px-4 bg-transparent border border-gray-300 dark:border-gray-600 rounded-xl" />
-          <p data-err="first_name" class="mt-1 text-xs text-red-600 hidden"></p>
-        </div>
-        <div>
-          <label for="last_name" class="block text-sm mb-1">Last Name <span class="text-red-600">*</span></label>
-          <input id="last_name" name="Last Name" type="text" required placeholder="Enter last name" autocomplete="family-name"
-                 class="w-full h-12 px-4 bg-transparent border border-gray-300 dark:border-gray-600 rounded-xl" />
-          <p data-err="last_name" class="mt-1 text-xs text-red-600 hidden"></p>
-        </div>
-      </div>
-
-      <!-- Contact -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-        <div>
-          <label for="email" class="block text-sm mb-1">Email <span class="text-red-600">*</span></label>
-          <input id="email" name="Email" type="email" required placeholder="someone@example.com" autocomplete="email"
-                 class="w-full h-12 px-4 bg-transparent border border-gray-300 dark:border-gray-600 rounded-xl" />
-          <p data-err="email" class="mt-1 text-xs text-red-600 hidden"></p>
-        </div>
-        <div>
-          <label class="block text-sm mb-1">Phone (Worldwide) <span class="text-red-600">*</span></label>
-          <div class="flex gap-2">
-            <input id="phone_cc" name="Phone Country Code" required type="text" inputmode="tel"
-                   placeholder="+92" value="+92" pattern="^\+\d{1,4}$" maxlength="5"
-                   class="w-28 h-12 px-3 bg-transparent border border-gray-300 dark:border-gray-600 rounded-xl" />
-            <input id="phone" name="Phone Number" required type="tel" inputmode="numeric"
-                   placeholder="e.g., 3001234567" pattern="^\d{6,15}$"
-                   class="w-full h-12 px-4 bg-transparent border border-gray-300 dark:border-gray-600 rounded-xl" />
-          </div>
-          <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Use your country code (e.g., +1, +44, +61, +92) and 6–15 digit number.</p>
-          <p data-err="phone_cc" class="mt-1 text-xs text-red-600 hidden"></p>
-          <p data-err="phone" class="mt-1 text-xs text-red-600 hidden"></p>
-        </div>
-      </div>
-
-      <!-- Meta -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-        <div>
-          <label for="experience" class="block text-sm mb-1">Total Experience (Years) <span class="text-red-600">*</span></label>
-          <input id="experience" name="Experience (Years)" type="number" min="0" step="0.5" required placeholder="e.g., 3"
-                 class="w-full h-12 px-4 bg-transparent border border-gray-300 dark:border-gray-600 rounded-xl" />
-          <p data-err="experience" class="mt-1 text-xs text-red-600 hidden"></p>
-        </div>
-        <div>
-          <label for="availability" class="block text-sm mb-1">Earliest Start Date <span class="text-red-600">*</span></label>
-          <input id="availability" name="Availability" type="date" required
-                 class="w-full h-12 px-4 bg-transparent border border-gray-300 dark:border-gray-600 rounded-xl" />
-          <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">We accept dates from today onward (not in the past).</p>
-          <p data-err="availability" class="mt-1 text-xs text-red-600 hidden"></p>
-        </div>
-      </div>
-
-      <!-- Location -->
-      <div>
-        <label for="location" class="block text-sm mb-1">Current Location <span class="text-red-600">*</span></label>
-        <input id="location" name="Location" type="text" required placeholder="City, Country"
-               class="w-full h-12 px-4 bg-transparent border border-gray-300 dark:border-gray-600 rounded-xl" />
-        <p data-err="location" class="mt-1 text-xs text-red-600 hidden"></p>
-      </div>
-
-      <!-- Links -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-        <div>
-          <label for="linkedin" class="block text-sm mb-1">LinkedIn</label>
-          <input id="linkedin" name="LinkedIn" type="url" placeholder="https://linkedin.com/in/username" inputmode="url"
-                 class="w-full h-12 px-4 bg-transparent border border-gray-300 dark:border-gray-600 rounded-xl" />
-          <p data-err="linkedin" class="mt-1 text-xs text-red-600 hidden"></p>
-        </div>
-        <div>
-          <label for="portfolio" class="block text-sm mb-1">Portfolio / GitHub</label>
-          <input id="portfolio" name="Portfolio" type="url" placeholder="https://yourportfolio.com" inputmode="url"
-                 class="w-full h-12 px-4 bg-transparent border border-gray-300 dark:border-gray-600 rounded-xl" />
-          <p data-err="portfolio" class="mt-1 text-xs text-red-600 hidden"></p>
-        </div>
-      </div>
-
-      <!-- Resume -->
-      <div>
-        <label for="resume_file" class="block text-sm mb-1">Upload Resume (PDF/DOC/DOCX) <span class="text-red-600">*</span></label>
-        <input id="resume_file" name="attachment" type="file" required
-               accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-               class="block w-full border rounded px-3 py-2 bg-transparent border-gray-300 dark:border-gray-600" />
-        <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Max 5MB.</p>
-        <p data-err="resume_file" class="mt-1 text-xs text-red-600 hidden"></p>
-      </div>
-
-      <!-- Expected Salary -->
-      <div>
-        <label for="salary" class="block text-sm mb-1">Expected Salary <span class="text-red-600">*</span></label>
-        <input id="salary" name="Expected Salary" type="text" required placeholder="e.g., 150000"
-               class="w-full h-12 px-4 bg-transparent border border-gray-300 dark:border-gray-600 rounded-xl" />
-        <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Enter amount in PKR (Rs).</p>
-        <p data-err="salary" class="mt-1 text-xs text-red-600 hidden"></p>
-      </div>
-
-      <!-- Role-Specific Blocks -->
-      <div id="role-specific" class="space-y-6"></div>
-
-      <!-- Recent Projects -->
-      <div>
-        <label for="recent_projects" class="block text-sm mb-1">Recent Projects (list) <span class="text-red-600">*</span></label>
-        <textarea id="recent_projects" name="Recent Projects" rows="5" required
-                  placeholder="List 2–5 recent projects (each on a new line). You can include short URLs."
-                  class="w-full px-4 py-3 bg-transparent border border-gray-300 dark:border-gray-600 rounded-xl"></textarea>
-        <p data-err="recent_projects" class="mt-1 text-xs text-red-600 hidden"></p>
-      </div>
-
-      <!-- Cover Letter -->
-      <div>
-        <label for="cover_letter" class="block text-sm mb-1">Cover Letter / Summary <span class="text-red-600">*</span></label>
-        <textarea id="cover_letter" name="Cover Letter" rows="6" required
-                  placeholder="Briefly tell us why you're a great fit..."
-                  class="w-full px-4 py-3 bg-transparent border border-gray-300 dark:border-gray-600 rounded-xl"></textarea>
-        <p data-err="cover_letter" class="mt-1 text-xs text-red-600 hidden"></p>
-      </div>
-
-      <!-- Consent -->
-      <div class="flex items-start gap-3">
-        <input id="consent" name="Consent" type="checkbox" value="I agree" required
-               class="mt-1 h-4 w-4 border border-gray-300 dark:border-gray-600 rounded" />
-        <label for="consent" class="text-sm">I agree my information may be used to evaluate my application in accordance with NexusXperts’ privacy policy. <span class="text-red-600">*</span></label>
-      </div>
-      <p data-err="consent" class="mt-1 text-xs text-red-600 hidden"></p>
-
-      <!-- Combined phone for email body -->
-      <input type="hidden" name="Phone (Full)" id="phone_full" />
-
-      <!-- Submit -->
-      <button type="submit" id="submitBtn"
-              class="flex items-center justify-center gap-2 bg-[#263d83] hover:bg-[#1d2f66] px-6 py-3 rounded-lg font-semibold shadow transition text-white">
-        <span>Submit Application</span>
-        <i class="fa-solid fa-paper-plane" aria-hidden="true"></i>
-      </button>
-
-      <p id="form-status" class="sr-only" aria-live="polite"></p>
-    </form>
-  </main>
-
-  <footer class="mt-auto border-t border-white/20">
-    <div class="mx-auto w-full max-w-screen-xl px-4 py-6 text-sm text-center">
-      © 2025 <span class="font-semibold">NexusXperts</span>. All rights reserved.
+                <!-- Current (ALWAYS 'Apply') -->
+                <li class="font-semibold text-white dark:text-zinc-100 tracking-wide min-w-0">
+                    <span id="crumb-role" class="truncate max-w-[44vw] sm:max-w-none">Apply</span>
+                </li>
+            </ol>
+        </nav>
     </div>
-  </footer>
 
-  <!-- EmailJS client SDK -->
-  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+    <!-- Main (nudged down; breadcrumb stays pinned) -->
+    <main class="w-full mx-auto max-w-3xl px-4 sm:px-6 py-10 pt-16 sm:pt-10 mt-12 sm:mt-16">
 
-  <script>
-    // ====== CONFIG —> put YOUR EmailJS keys here ======
-    const EMAILJS_PUBLIC_KEY  = 'YOUR_PUBLIC_KEY';
-    const EMAILJS_SERVICE_ID  = 'YOUR_SERVICE_ID';
-    const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';
-    // ================================================
+        <!-- H1 shows ONLY the Form Name (role), no 'Apply –' -->
+        <h1 id="page-title" class="text-2xl sm:text-3xl font-bold mb-2">Application</h1>
+        <p id="page-sub" class="mb-8 text-sm sm:text-base dark:text-gray-300">
+            Please complete the application below. Fields may change based on the role.
+        </p>
 
-    // ---------- Toast ----------
-    function toast(message, type = "info") {
-      const root = document.getElementById("toast-root");
-      const el = document.createElement("div");
-      const accents = { success: "bg-emerald-500", error: "bg-red-500", warn: "bg-amber-500", info: "bg-sky-500" };
-      el.className = [
-        "pointer-events-auto","bg-[#263d83] text-white","dark:bg-white dark:text-[#263d83]",
-        "rounded-xl shadow-lg border","border-white/30 dark:border-[#263d83]/20",
-        "flex items-start gap-3","w-[min(92vw,420px)] px-4 py-3",
-        "opacity-0 translate-y-2 transition-all duration-200 ease-out"
-      ].join(" ");
-      el.innerHTML = `
+        <!-- Form uses Arial only -->
+        <form id="apply-form" action="https://formsubmit.co/ajax/contact@nexusxperts.com" method="POST"
+            enctype="multipart/form-data" class="space-y-6 bg-white/70 dark:bg-white/5 rounded-xl p-6 sm:p-8"
+            style="font-family: Arial, Helvetica, sans-serif;" novalidate>
+            <!-- FormSubmit controls -->
+            <input type="hidden" name="_subject" id="_subject" value="New Job Application – NexusXperts" />
+            <input type="hidden" name="_template" value="table" />
+            <input type="hidden" name="_captcha" value="false" />
+            <input type="hidden" name="_url" value="https://nexusxperts.com/apply" />
+            <!-- Honeypot -->
+            <div class="hidden" aria-hidden="true">
+                <label for="_honey">Do not fill this out</label>
+                <input type="text" id="_honey" name="_honey" tabindex="-1" autocomplete="off" />
+            </div>
+
+            <!-- Role (locked) -->
+            <div>
+                <label for="role" class="block text-sm mb-1">Position Applying For <span
+                        class="text-red-600">*</span></label>
+                <input id="role" name="Position" type="text" readonly
+                    class="w-full h-12 px-4 bg-zinc-100 dark:bg-white/10 border border-gray-300 dark:border-gray-600 rounded-xl" />
+            </div>
+
+            <!-- Name -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <div>
+                    <label for="first_name" class="block text-sm mb-1">First Name <span
+                            class="text-red-600">*</span></label>
+                    <input id="first_name" name="First Name" type="text" required placeholder="Enter first name"
+                        autocomplete="given-name"
+                        class="w-full h-12 px-4 bg-transparent border border-gray-300 dark:border-gray-600 rounded-xl" />
+                    <p data-err="first_name" class="mt-1 text-xs text-red-600 hidden"></p>
+                </div>
+                <div>
+                    <label for="last_name" class="block text-sm mb-1">Last Name <span
+                            class="text-red-600">*</span></label>
+                    <input id="last_name" name="Last Name" type="text" required placeholder="Enter last name"
+                        autocomplete="family-name"
+                        class="w-full h-12 px-4 bg-transparent border border-gray-300 dark:border-gray-600 rounded-xl" />
+                    <p data-err="last_name" class="mt-1 text-xs text-red-600 hidden"></p>
+                </div>
+            </div>
+
+            <!-- Contact -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <div>
+                    <label for="email" class="block text-sm mb-1">Email <span class="text-red-600">*</span></label>
+                    <input id="email" name="Email" type="email" required placeholder="someone@example.com"
+                        autocomplete="email"
+                        class="w-full h-12 px-4 bg-transparent border border-gray-300 dark:border-gray-600 rounded-xl" />
+                    <p data-err="email" class="mt-1 text-xs text-red-600 hidden"></p>
+                </div>
+                <div>
+                    <label class="block text-sm mb-1">Phone (Worldwide) <span class="text-red-600">*</span></label>
+                    <div class="flex gap-2">
+                        <!-- Country code: + plus 1–3 digits ONLY -->
+                        <input id="phone_cc" name="Phone Country Code" required type="text" inputmode="tel"
+                            placeholder="+92" value="+92" pattern="^\+\d{1,3}$" maxlength="4"
+                            class="w-28 h-12 px-3 bg-transparent border border-gray-300 dark:border-gray-600 rounded-xl" />
+                        <input id="phone" name="Phone Number" required type="tel" inputmode="numeric"
+                            placeholder="e.g., 3001234567" pattern="^\d{6,15}$"
+                            class="w-full h-12 px-4 bg-transparent border border-gray-300 dark:border-gray-600 rounded-xl" />
+                    </div>
+                    <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Use your country code (e.g., +1, +44, +61,
+                        +92) and 6–15 digit number.</p>
+                    <p data-err="phone_cc" class="mt-1 text-xs text-red-600 hidden"></p>
+                    <p data-err="phone" class="mt-1 text-xs text-red-600 hidden"></p>
+                </div>
+            </div>
+
+            <!-- Meta -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <div>
+                    <label for="experience" class="block text-sm mb-1">Total Experience (Years) <span
+                            class="text-red-600">*</span></label>
+                    <input id="experience" name="Experience (Years)" type="number" min="0" step="0.5" required
+                        placeholder="e.g., 3"
+                        class="w-full h-12 px-4 bg-transparent border border-gray-300 dark:border-gray-600 rounded-xl" />
+                    <p data-err="experience" class="mt-1 text-xs text-red-600 hidden"></p>
+                </div>
+                <div>
+                    <label for="availability" class="block text-sm mb-1">Earliest Start Date <span
+                            class="text-red-600">*</span></label>
+                    <input id="availability" name="Availability" type="date" required
+                        class="w-full h-12 px-4 bg-transparent border border-gray-300 dark:border-gray-600 rounded-xl" />
+                    <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">We accept dates from today onward (not in
+                        the past).</p>
+                    <p data-err="availability" class="mt-1 text-xs text-red-600 hidden"></p>
+                </div>
+            </div>
+
+            <!-- Location -->
+            <div>
+                <label for="location" class="block text-sm mb-1">Current Location <span
+                        class="text-red-600">*</span></label>
+                <input id="location" name="Location" type="text" required placeholder="City, Country"
+                    class="w-full h-12 px-4 bg-transparent border border-gray-300 dark:border-gray-600 rounded-xl" />
+                <p data-err="location" class="mt-1 text-xs text-red-600 hidden"></p>
+            </div>
+
+            <!-- Links -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <div>
+                    <label for="linkedin" class="block text-sm mb-1">LinkedIn</label>
+                    <input id="linkedin" name="LinkedIn" type="url" placeholder="https://linkedin.com/in/username"
+                        inputmode="url"
+                        class="w-full h-12 px-4 bg-transparent border border-gray-300 dark:border-gray-600 rounded-xl" />
+                    <p data-err="linkedin" class="mt-1 text-xs text-red-600 hidden"></p>
+                </div>
+                <div>
+                    <label for="portfolio" class="block text-sm mb-1">Portfolio / GitHub</label>
+                    <input id="portfolio" name="Portfolio" type="url" placeholder="https://yourportfolio.com"
+                        inputmode="url"
+                        class="w-full h-12 px-4 bg-transparent border border-gray-300 dark:border-gray-600 rounded-xl" />
+                    <p data-err="portfolio" class="mt-1 text-xs text-red-600 hidden"></p>
+                </div>
+            </div>
+
+            <!-- Resume -->
+            <div>
+                <label for="resume_file" class="block text-sm mb-1">Upload Resume (PDF/DOC/DOCX) <span
+                        class="text-red-600">*</span></label>
+                <input id="resume_file" name="attachment" type="file" required
+                    accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                    class="block w-full border rounded px-3 py-2 bg-transparent border-gray-300 dark:border-gray-600" />
+                <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Max 10MB.</p>
+                <p data-err="resume_file" class="mt-1 text-xs text-red-600 hidden"></p>
+            </div>
+
+            <!-- Expected Salary (required, digits only) -->
+            <div>
+                <label for="salary" class="block text-sm mb-1">Expected Salary <span
+                        class="text-red-600">*</span></label>
+                <input id="salary" name="Expected Salary" type="text" required placeholder="e.g., 150000"
+                    class="w-full h-12 px-4 bg-transparent border border-gray-300 dark:border-gray-600 rounded-xl" />
+                <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Enter amount in PKR (Rs).
+                </p>
+                <p data-err="salary" class="mt-1 text-xs text-red-600 hidden"></p>
+            </div>
+
+            <!-- Role-Specific Blocks -->
+            <div id="role-specific" class="space-y-6">
+                <!-- Injected by JS based on ?role= -->
+            </div>
+
+            <!-- Recent Projects (list) -->
+            <div>
+                <label for="recent_projects" class="block text-sm mb-1">Recent Projects (list) <span
+                        class="text-red-600">*</span></label>
+                <textarea id="recent_projects" name="Recent Projects" rows="5" required
+                    placeholder="List 2–5 recent projects (each on a new line). You can include short URLs."
+                    class="w-full px-4 py-3 bg-transparent border border-gray-300 dark:border-gray-600 rounded-xl"></textarea>
+                <p data-err="recent_projects" class="mt-1 text-xs text-red-600 hidden"></p>
+            </div>
+
+            <!-- Cover Letter -->
+            <div>
+                <label for="cover_letter" class="block text-sm mb-1">Cover Letter / Summary <span
+                        class="text-red-600">*</span></label>
+                <textarea id="cover_letter" name="Cover Letter" rows="6" required
+                    placeholder="Briefly tell us why you're a great fit..."
+                    class="w-full px-4 py-3 bg-transparent border border-gray-300 dark:border-gray-600 rounded-xl"></textarea>
+                <p data-err="cover_letter" class="mt-1 text-xs text-red-600 hidden"></p>
+            </div>
+
+            <!-- Consent -->
+            <div class="flex items-start gap-3">
+                <input id="consent" name="Consent" type="checkbox" value="I agree" required
+                    class="mt-1 h-4 w-4 border border-gray-300 dark:border-gray-600 rounded" />
+                <label for="consent" class="text-sm">I agree my information may be used to evaluate my application in
+                    accordance with NexusXperts’ privacy policy. <span class="text-red-600">*</span></label>
+            </div>
+            <p data-err="consent" class="mt-1 text-xs text-red-600 hidden"></p>
+
+            <!-- Combined phone for email body -->
+            <input type="hidden" name="Phone (Full)" id="phone_full" />
+
+            <!-- Submit -->
+            <button type="submit" id="submitBtn"
+                class="flex items-center justify-center gap-2 bg-[#263d83] hover:bg-[#1d2f66] px-6 py-3 rounded-lg font-semibold shadow transition text-white">
+                <span>Submit Application</span>
+                <i class="fa-solid fa-paper-plane" aria-hidden="true"></i>
+            </button>
+
+            <!-- SR-only live region -->
+            <p id="form-status" class="sr-only" aria-live="polite"></p>
+        </form>
+    </main>
+
+    <footer class="mt-auto border-t border-white/20">
+        <div class="mx-auto w-full max-w-screen-xl px-4 py-6 text-sm text-center">
+            © 2025 <span class="font-semibold">NexusXperts</span>. All rights reserved.
+        </div>
+    </footer>
+
+    <script>
+        // ---------- Toast ----------
+        function toast(message, type = "info") {
+            const root = document.getElementById("toast-root");
+            const el = document.createElement("div");
+            const accents = { success: "bg-emerald-500", error: "bg-red-500", warn: "bg-amber-500", info: "bg-sky-500" };
+            el.className = [
+                "pointer-events-auto",
+                "bg-[#263d83] text-white", "dark:bg-white dark:text-[#263d83]",
+                "rounded-xl shadow-lg border", "border-white/30 dark:border-[#263d83]/20",
+                "flex items-start gap-3", "w-[min(92vw,420px)] px-4 py-3",
+                "opacity-0 translate-y-2 transition-all duration-200 ease-out"
+            ].join(" ");
+            el.innerHTML = `
         <div class="shrink-0 mt-0.5 w-1.5 h-6 rounded ${accents[type] || accents.info}"></div>
         <div class="text-sm leading-5 grow">${message}</div>
         <button aria-label="Close" class="shrink-0 ml-1 opacity-80 hover:opacity-100 transition">
           <i class="fa-solid fa-xmark"></i>
         </button>`;
-      el.querySelector("button")?.addEventListener("click", () => {
-        el.classList.add("opacity-0", "translate-y-2");
-        setTimeout(() => root.contains(el) && root.removeChild(el), 180);
-      });
-      root.appendChild(el);
-      requestAnimationFrame(() => el.classList.remove("opacity-0", "translate-y-2"));
-      setTimeout(() => {
-        if (!root.contains(el)) return; el.classList.add("opacity-0", "translate-y-2");
-        setTimeout(() => root.contains(el) && root.removeChild(el), 180);
-      }, 5000);
-    }
+            el.querySelector("button")?.addEventListener("click", () => {
+                el.classList.add("opacity-0", "translate-y-2");
+                setTimeout(() => root.contains(el) && root.removeChild(el), 180);
+            });
+            root.appendChild(el);
+            requestAnimationFrame(() => el.classList.remove("opacity-0", "translate-y-2"));
+            setTimeout(() => {
+                if (!root.contains(el)) return; el.classList.add("opacity-0", "translate-y-2");
+                setTimeout(() => root.contains(el) && root.removeChild(el), 180);
+            }, 5000);
+        }
 
-    // ---------- Helpers ----------
-    const $ = (id) => document.getElementById(id);
-    const form = $("apply-form");
-    const status = $("form-status");
-    const submitBtn = $("submitBtn");
-    const submitText = submitBtn.querySelector("span");
+        // ---------- Helpers ----------
+        const $ = (id) => document.getElementById(id);
+        const form = $("apply-form");
+        const status = $("form-status");
+        const submitBtn = $("submitBtn");
+        const submitText = submitBtn.querySelector("span");
 
-    function setErr(id, msg) {
-      const el = $(id); const err = document.querySelector(`[data-err="${id}"]`);
-      if (!el || !err) return;
-      el.setAttribute("aria-invalid", "true");
-      if (el.tagName !== "FIELDSET") el.classList.add("border-red-500", "ring-2", "ring-red-500");
-      err.textContent = msg; err.classList.remove("hidden");
-    }
-    function clearErr(id) {
-      const el = $(id); const err = document.querySelector(`[data-err="${id}"]`);
-      if (!el || !err) return;
-      el.removeAttribute("aria-invalid");
-      if (el.tagName !== "FIELDSET") el.classList.remove("border-red-500", "ring-2", "ring-red-500");
-      err.textContent = ""; err.classList.add("hidden");
-    }
-    function urlParam(name) {
-      const p = new URLSearchParams(location.search); return p.get(name) || "";
-    }
-    function scrollToFirstError() {
-      const firstInvalid = document.querySelector('[aria-invalid="true"]');
-      const firstErrNote = document.querySelector('[data-err]:not(.hidden)');
-      const target = firstInvalid || firstErrNote;
-      if (target?.scrollIntoView) {
-        target.scrollIntoView({ behavior: "smooth", block: "center" });
-        if (firstInvalid?.focus) firstInvalid.focus({ preventScroll: true });
-      }
-    }
+        function setErr(id, msg) {
+            const el = $(id); const err = document.querySelector(`[data-err="${id}"]`);
+            if (!el || !err) return;
+            el.setAttribute("aria-invalid", "true");
+            if (el.tagName !== "FIELDSET") {
+                el.classList.add("border-red-500", "ring-2", "ring-red-500");
+            }
 
-    // ---------- Role-driven UI ----------
-    const role = decodeURIComponent(urlParam("role") || "General Application");
-    $("role").value = role;
-    $("page-title").textContent = role;
-    document.title = `${role} | NexusXperts`;
-    $("page-sub").textContent = `You're applying for “${role}”. Please complete all required fields.`;
+            err.textContent = msg; err.classList.remove("hidden");
+        }
+        function clearErr(id) {
+            const el = $(id); const err = document.querySelector(`[data-err="${id}"]`);
+            if (!el || !err) return;
+            el.removeAttribute("aria-invalid");
+            if (el.tagName !== "FIELDSET") {
+                el.classList.remove("border-red-500", "ring-2", "ring-red-500");
+            }
 
-    const rs = $("role-specific");
-    const blocks = {
-      "Full Stack Engineer": `
+            err.textContent = ""; err.classList.add("hidden");
+        }
+        function urlParam(name) {
+            const p = new URLSearchParams(location.search);
+            return p.get(name) || "";
+        }
+        function scrollToFirstError() {
+            const firstInvalid = document.querySelector('[aria-invalid="true"]');
+            const firstErrNote = document.querySelector('[data-err]:not(.hidden)');
+            const target = firstInvalid || firstErrNote;
+            if (target && typeof target.scrollIntoView === "function") {
+                target.scrollIntoView({ behavior: "smooth", block: "center" });
+                if (firstInvalid && typeof firstInvalid.focus === "function") firstInvalid.focus({ preventScroll: true });
+            }
+        }
+
+        // ---------- Role-driven UI ----------
+        const role = decodeURIComponent(urlParam("role") || "General Application");
+        $("role").value = role;
+        $("page-title").textContent = role;
+        document.title = `${role} | NexusXperts`;
+        $("page-sub").textContent = `You're applying for “${role}”. Please complete all required fields.`;
+
+        const rs = $("role-specific");
+        const blocks = {
+            "Full Stack Engineer": `
         <fieldset id="skills" role="group" aria-required="true" class="border-0 p-0 m-0 rounded-xl">
-          <legend class="font-semibold mb-2">Tech Stack (check all that apply) <span class="text-red-600">*</span></legend>
+          <legend class="font-semibold mb-2">
+            Tech Stack (check all that apply) <span class="text-red-600">*</span>
+          </legend>
           <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-sm">
-            ${["React","Next.js","TypeScript","Node.js","Python","FastAPI","Django","PostgreSQL","MySQL","Docker","Kubernetes","AWS","GCP","CI/CD"].map(x => `
+            ${["React", "Next.js", "TypeScript", "Node.js", "Python", "FastAPI", "Django", "PostgreSQL", "MySQL", "Docker", "Kubernetes", "AWS", "GCP", "CI/CD"].map(x => `
               <label class="inline-flex items-center gap-2">
                 <input type="checkbox" name="Skills" value="${x}" class="h-4 w-4 border-gray-300 dark:border-gray-600">
                 <span>${x}</span>
@@ -356,11 +397,13 @@
           <p data-err="fs_proj" class="mt-1 text-xs text-red-600 hidden"></p>
         </div>
       `,
-      "Python Backend Developer": `
+            "Python Backend Developer": `
         <fieldset id="be_skills" role="group" aria-required="true" class="border-0 p-0 m-0 rounded-xl">
-          <legend class="font-semibold mb-2">Backend Experience (check all that apply) <span class="text-red-600">*</span></legend>
+          <legend class="font-semibold mb-2">
+            Backend Experience (check all that apply) <span class="text-red-600">*</span>
+          </legend>
           <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-sm">
-            ${["FastAPI","Django REST","Celery","Redis","RabbitMQ","PostgreSQL","SQLAlchemy","gRPC","Auth (JWT/OAuth)","Docker","Kubernetes","AWS","GCP"].map(x => `
+            ${["FastAPI", "Django REST", "Celery", "Redis", "RabbitMQ", "PostgreSQL", "SQLAlchemy", "gRPC", "Auth (JWT/OAuth)", "Docker", "Kubernetes", "AWS", "GCP"].map(x => `
               <label class="inline-flex items-center gap-2">
                 <input type="checkbox" name="Backend Skills" value="${x}" class="h-4 w-4 border-gray-300 dark:border-gray-600">
                 <span>${x}</span>
@@ -383,11 +426,13 @@
           </div>
         </div>
       `,
-      "SEO & Google Ads Specialist": `
+            "SEO & Google Ads Specialist": `
         <fieldset id="seo_skills" role="group" aria-required="true" class="border-0 p-0 m-0 rounded-xl">
-          <legend class="font-semibold mb-2">Core Competencies <span class="text-red-600">*</span></legend>
+          <legend class="font-semibold mb-2">
+            Core Competencies <span class="text-red-600">*</span>
+          </legend>
           <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-sm">
-            ${["Technical SEO","On-Page SEO","Off-Page SEO","GA4","GSC","GTM","Google Ads (Search)","Shopping Ads","Display/Video","Keyword Research","Link Building","Local SEO"].map(x => `
+            ${["Technical SEO", "On-Page SEO", "Off-Page SEO", "GA4", "GSC", "GTM", "Google Ads (Search)", "Shopping Ads", "Display/Video", "Keyword Research", "Link Building", "Local SEO"].map(x => `
               <label class="inline-flex items-center gap-2">
                 <input type="checkbox" name="SEO Skills" value="${x}" class="h-4 w-4 border-gray-300 dark:border-gray-600">
                 <span>${x}</span>
@@ -416,8 +461,8 @@
           <p data-err="seo_case" class="mt-1 text-xs text-red-600 hidden"></p>
         </div>
       `
-    };
-    rs.innerHTML = blocks[role] || `
+        };
+        rs.innerHTML = blocks[role] || `
       <div>
         <label class="block text-sm mb-1">Primary Skillset <span class="text-red-600">*</span></label>
         <input id="gen_primary" name="Primary Skillset" type="text" placeholder="e.g., Frontend, Backend, SEO"
@@ -425,225 +470,208 @@
         <p data-err="gen_primary" class="mt-1 text-xs text-red-600 hidden"></p>
       </div>`;
 
-    // ---------- Date min ----------
-    function setAvailabilityMin() {
-      const el = document.getElementById('availability');
-      if (!el) return;
-      const pad = n => String(n).padStart(2, '0');
-      const now = new Date();
-      const today = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}`;
-      el.setAttribute('min', today);
-      if (el.value && el.value < today) el.value = today;
-    }
-    setAvailabilityMin();
-
-    // ---------- Validation ----------
-    const validators = {
-      first_name: v => v.length > 0 || "This field is required.",
-      last_name: v => v.length > 0 || "This field is required.",
-      email: v => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v) || "Enter a valid email.",
-      phone_cc: v => /^\+\d{1,4}$/.test(v) || "Use + and 1–4 digits (e.g., +1, +44, +92).",
-      phone: v => /^\d{6,15}$/.test(v) || "Enter 6–15 digits (no spaces).",
-      experience: v => (v !== "" && Number(v) >= 0) || "Enter a valid number.",
-      availability: v => {
-        if (!v) return "This field is required.";
-        const today = new Date(); today.setHours(0, 0, 0, 0);
-        const d = new Date(v); return d >= today || "Date cannot be in the past.";
-      },
-      location: v => v.length > 0 || "This field is required.",
-      linkedin: v => (!v || /^https?:\/\//i.test(v)) || "Enter a valid URL.",
-      portfolio: v => (!v || /^https?:\/\//i.test(v)) || "Enter a valid URL.",
-      salary: v => (/^\d+$/.test(v.trim())) || "Enter a numeric value (digits only).",
-      cover_letter: v => v.length > 0 || "This field is required.",
-      consent: v => v === true || "Consent is required.",
-      recent_projects: v => v.split(/\n/).filter(l => l.trim().length > 0).length >= 2 || "List at least 2 projects.",
-      resume_file: file => {
-        if (!file) return "Resume is required.";
-        const ok = [
-          "application/pdf",
-          "application/msword",
-          "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-        ];
-        if (!ok.includes(file.type)) return "Allowed: PDF/DOC/DOCX.";
-        if (file.size > 5 * 1024 * 1024) return "Max file size is 5MB.";
-        return true;
-      }
-    };
-    function validateField(id) {
-      clearErr(id);
-      const el = $(id); if (!el) return true;
-      const v = (el.type === "checkbox") ? el.checked : (el.value || "").trim();
-      const rule = validators[id]; if (!rule) return true;
-      const res = rule(el.type === "file" ? el.files[0] : v);
-      if (res !== true) { setErr(id, res); return false; }
-      return true;
-    }
-    function validateRoleSpecific() {
-      if (role === "Full Stack Engineer") {
-        const any = [...document.querySelectorAll('input[name="Skills"]:checked')].length > 0;
-        if (!any) setErr("skills", "Select at least one skill."); else clearErr("skills");
-        if (!($("fs_strong")?.value.trim())) { setErr("fs_strong","This field is required."); } else { clearErr("fs_strong"); }
-        return any && Boolean($("fs_strong")?.value.trim());
-      } else if (role === "Python Backend Developer") {
-        const any = [...document.querySelectorAll('input[name="Backend Skills"]:checked')].length > 0;
-        if (!any) setErr("be_skills","Select at least one skill."); else clearErr("be_skills");
-        const v = $("be_async")?.value;
-        if (v === "" || Number(v) < 0) { setErr("be_async","Enter a valid number."); } else { clearErr("be_async"); }
-        return any && !(v === "" || Number(v) < 0);
-      } else if (role === "SEO & Google Ads Specialist") {
-        const any = [...document.querySelectorAll('input[name="SEO Skills"]:checked')].length > 0;
-        if (!any) setErr("seo_skills","Select at least one competency."); else clearErr("seo_skills");
-        const b = $("ads_budget")?.value;
-        if (b === "" || Number(b) < 0) { setErr("ads_budget","Enter a valid budget."); } else { clearErr("ads_budget"); }
-        const caseUrl = $("seo_case")?.value.trim();
-        if (caseUrl && !/^https?:\/\//i.test(caseUrl)) { setErr("seo_case","Enter a valid URL."); } else { clearErr("seo_case"); }
-        return any && !(b === "" || Number(b) < 0) && !(caseUrl && !/^https?:\/\//i.test(caseUrl));
-      } else {
-        if (!($("gen_primary")?.value.trim())) { setErr("gen_primary","This field is required."); return false; }
-        clearErr("gen_primary"); return true;
-      }
-    }
-    ["first_name","last_name","email","phone_cc","phone","experience","availability","location","linkedin","portfolio","salary","cover_letter","recent_projects"]
-      .forEach(id => { $(id)?.addEventListener("input", () => clearErr(id)); $(id)?.addEventListener("change", () => clearErr(id)); });
-    $("resume_file")?.addEventListener("change", () => clearErr("resume_file"));
-    $("consent")?.addEventListener("change", () => clearErr("consent"));
-
-    // number input guard
-    document.addEventListener("keydown", (ev) => {
-      const el = ev.target; if (el.tagName !== "INPUT" || el.type !== "number") return;
-      const k = ev.key; const allowDot = (el.getAttribute("step") || "").includes(".");
-      if (["e","E","+","-"].includes(k) || (!allowDot && k === ".")) ev.preventDefault();
-    }, true);
-
-    // simple input filters
-    const digitsOnlyInput = (el) => el.value = (el.value || "").replace(/\D+/g, "");
-    $("salary")?.addEventListener("input", () => digitsOnlyInput($("salary")));
-    $("phone")?.addEventListener("input", () => digitsOnlyInput($("phone")));
-    $("phone_cc")?.addEventListener("input", () => {
-      let v = $("phone_cc").value || "";
-      v = v.replace(/^\+?/, "+");
-      v = "+" + v.slice(1).replace(/\D+/g, "").slice(0, 4);
-      $("phone_cc").value = v.slice(0, 5);
-    });
-
-    // ---------- EmailJS init ----------
-    (function() {
-      if (!EMAILJS_PUBLIC_KEY || EMAILJS_PUBLIC_KEY.includes('YOUR_')) {
-        console.warn('EmailJS public key missing. Add your key in EMAILJS_PUBLIC_KEY.');
-      }
-      emailjs.init(EMAILJS_PUBLIC_KEY);
-    })();
-
-    // Convert a File to base64 (data URL), then strip the prefix for EmailJS
-    function fileToBase64(file) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onerror = () => reject(new Error("Failed to read file."));
-        reader.onload = () => {
-          const res = String(reader.result || "");
-          // res is like: "data:application/pdf;base64,JVBERi0xLjc..."
-          const base64 = res.split(",")[1] || ""; // EmailJS accepts "data" as raw base64
-          resolve({ base64, mime: file.type, name: file.name });
-        };
-        reader.readAsDataURL(file);
-      });
-    }
-
-    // ---------- Submit (JS; no redirect) ----------
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-
-      // honeypot
-      if (form.querySelector('input[name="_honey"]')?.value) return;
-
-      // Validate all
-      const ids = ["first_name","last_name","email","phone_cc","phone","experience","availability","location","linkedin","portfolio","salary","recent_projects","cover_letter","resume_file","consent"];
-      let ok = true;
-      ids.forEach(id => { if (!validateField(id)) ok = false; });
-      if (!validateRoleSpecific()) ok = false;
-      if (!ok) { toast("Please fix the highlighted fields and try again.", "error"); scrollToFirstError(); return; }
-
-      // Build params for EmailJS
-      $("phone_full").value = `${$("phone_cc").value.trim()} ${$("phone").value.trim()}`;
-      const file = $("resume_file").files[0];
-
-      // Loading UI
-      submitBtn.disabled = true;
-      submitBtn.classList.add("opacity-70","cursor-not-allowed");
-      submitText.textContent = "Sending…";
-      status.textContent = "Submitting application…";
-
-      try {
-        const { base64, name } = await fileToBase64(file);
-
-        const templateParams = {
-          // map your fields (make sure your EmailJS template expects these)
-          position: $("role").value,
-          first_name: $("first_name").value.trim(),
-          last_name: $("last_name").value.trim(),
-          email: $("email").value.trim(),
-          phone_cc: $("phone_cc").value.trim(),
-          phone: $("phone").value.trim(),
-          phone_full: $("phone_full").value.trim(),
-          experience: $("experience").value.trim(),
-          availability: $("availability").value.trim(),
-          location: $("location").value.trim(),
-          linkedin: $("linkedin").value.trim(),
-          portfolio: $("portfolio").value.trim(),
-          expected_salary: $("salary").value.trim(),
-          cover_letter: $("cover_letter").value.trim(),
-          recent_projects: $("recent_projects").value.trim(),
-
-          // role-specific (send concatenated; adjust your template as needed)
-          fs_strong: $("fs_strong")?.value || "",
-          fs_proj: $("fs_proj")?.value || "",
-          be_async: $("be_async")?.value || "",
-          be_mq: $("be_mq")?.value || "",
-          ads_budget: $("ads_budget")?.value || "",
-          certs: $("certs")?.value || "",
-          seo_case: $("seo_case")?.value || "",
-          skills: [...document.querySelectorAll('input[name="Skills"]:checked')].map(i=>i.value).join(", "),
-          backend_skills: [...document.querySelectorAll('input[name="Backend Skills"]:checked')].map(i=>i.value).join(", "),
-          seo_skills: [...document.querySelectorAll('input[name="SEO Skills"]:checked')].map(i=>i.value).join(", "),
-
-          // email subject override (optional)
-          subject_line: `New Job Application – ${$("page-title").textContent} – NexusXperts`
-        };
-
-        // EmailJS attachments: array of { name, data } where data is base64 (no "data:" prefix)
-        const sendOptions = {
-          publicKey: EMAILJS_PUBLIC_KEY,
-        };
-
-        const response = await emailjs.send(
-          EMAILJS_SERVICE_ID,
-          EMAILJS_TEMPLATE_ID,
-          {
-            ...templateParams,
-            attachments: [
-              { name, data: base64 }
-            ]
-          },
-          sendOptions
-        );
-
-        // Success
-        toast("Application submitted successfully. Thank you!", "success");
-        status.textContent = "Your application has been submitted.";
-        form.reset();
-        $("phone_cc").value = "+92";
+        // ---------- Date min (today) + guards ----------
+        function setAvailabilityMin() {
+            const el = document.getElementById('availability');
+            if (!el) return;
+            const pad = n => String(n).padStart(2, '0');
+            const now = new Date();
+            const yyyy = now.getFullYear();
+            const mm = pad(now.getMonth() + 1);
+            const dd = pad(now.getDate());
+            const today = `${yyyy}-${mm}-${dd}`;
+            el.setAttribute('min', today);
+            if (el.value && el.value < today) el.value = today; // snap past -> today
+        }
         setAvailabilityMin();
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible') setAvailabilityMin();
+        });
+        document.getElementById('availability')?.addEventListener('input', (e) => {
+            const min = e.target.getAttribute('min') || '';
+            if (min && e.target.value && e.target.value < min) e.target.value = min;
+        });
 
-      } catch (err) {
-        console.error(err);
-        toast("Failed to send. Check your EmailJS IDs/keys and template.", "error");
-        status.textContent = "Failed to send. Please try again.";
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.classList.remove("opacity-70","cursor-not-allowed");
-        submitText.textContent = "Submit Application";
-      }
-    });
-  </script>
+        // ---------- Validation ----------
+        const validators = {
+            first_name: v => v.length > 0 || "This field is required.",
+            last_name: v => v.length > 0 || "This field is required.",
+            email: v => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v) || "Enter a valid email.",
+            phone_cc: v => /^\+\d{1,3}$/.test(v) || "Use + and 1–3 digits (e.g., +1, +44, +92).",
+            phone: v => /^\d{6,15}$/.test(v) || "Enter 6–15 digits (no spaces).",
+            experience: v => (v !== "" && Number(v) >= 0) || "Enter a valid number.",
+            availability: v => {
+                if (!v) return "This field is required.";
+                const today = new Date(); today.setHours(0, 0, 0, 0);
+                const d = new Date(v); return d >= today || "Date cannot be in the past.";
+            },
+            location: v => v.length > 0 || "This field is required.",
+            linkedin: v => (!v || /^https?:\/\//i.test(v)) || "Enter a valid URL.",
+            portfolio: v => (!v || /^https?:\/\//i.test(v)) || "Enter a valid URL.",
+            salary: v => (/^\d+$/.test(v.trim())) || "Enter a numeric value (digits only).",
+            cover_letter: v => v.length > 0 || "This field is required.",
+            consent: v => v === true || "Consent is required.",
+            recent_projects: v => v.split(/\n/).filter(l => l.trim().length > 0).length >= 2 || "List at least 2 projects.",
+            resume_file: file => {
+                if (!file) return "Resume is required.";
+                const ok = [
+                    "application/pdf",
+                    "application/msword",
+                    "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                ];
+                if (!ok.includes(file.type)) return "Allowed: PDF/DOC/DOCX.";
+                if (file.size > 10 * 1024 * 1024) return "Max file size is 10MB.";
+                return true;
+            }
+        };
+
+        function validateField(id) {
+            clearErr(id);
+            const el = $(id);
+            if (!el) return true;
+            const v = (el.type === "checkbox") ? el.checked : (el.value || "").trim();
+            const rule = validators[id];
+            if (!rule) return true;
+            const res = rule(el.type === "file" ? el.files[0] : v);
+            if (res !== true) { setErr(id, res); return false; }
+            return true;
+        }
+
+        // Extra role-specific validation (checkbox group concise error)
+        function validateRoleSpecific() {
+            if (role === "Full Stack Engineer") {
+                const any = [...document.querySelectorAll('input[name="Skills"]:checked')].length > 0;
+                if (!any) { setErr("skills", "Select at least one skill."); } else { clearErr("skills"); }
+                if (!($("fs_strong")?.value.trim())) { setErr("fs_strong", "This field is required."); } else { clearErr("fs_strong"); }
+                return any && Boolean($("fs_strong")?.value.trim());
+            } else if (role === "Python Backend Developer") {
+                const any = [...document.querySelectorAll('input[name="Backend Skills"]:checked')].length > 0;
+                if (!any) { setErr("be_skills", "Select at least one skill."); } else { clearErr("be_skills"); }
+                const v = $("be_async")?.value;
+                if (v === "" || Number(v) < 0) { setErr("be_async", "Enter a valid number."); } else { clearErr("be_async"); }
+                return any && !(v === "" || Number(v) < 0);
+            } else if (role === "SEO & Google Ads Specialist") {
+                const any = [...document.querySelectorAll('input[name="SEO Skills"]:checked')].length > 0;
+                if (!any) { setErr("seo_skills", "Select at least one competency."); } else { clearErr("seo_skills"); }
+                const b = $("ads_budget")?.value;
+                if (b === "" || Number(b) < 0) { setErr("ads_budget", "Enter a valid budget."); } else { clearErr("ads_budget"); }
+                const caseUrl = $("seo_case")?.value.trim();
+                if (caseUrl && !/^https?:\/\//i.test(caseUrl)) { setErr("seo_case", "Enter a valid URL."); } else { clearErr("seo_case"); }
+                return any && !(b === "" || Number(b) < 0) && !(caseUrl && !/^https?:\/\//i.test(caseUrl));
+            } else {
+                if (!($("gen_primary")?.value.trim())) { setErr("gen_primary", "This field is required."); return false; }
+                clearErr("gen_primary");
+                return true;
+            }
+        }
+
+        // Bind realtime clear and concise error for checkbox groups
+        ["first_name", "last_name", "email", "phone_cc", "phone", "experience", "availability", "location", "linkedin", "portfolio", "salary", "cover_letter", "recent_projects"]
+            .forEach(id => { $(id)?.addEventListener("input", () => clearErr(id)); $(id)?.addEventListener("change", () => clearErr(id)); });
+        $("resume_file")?.addEventListener("change", () => clearErr("resume_file"));
+        $("consent")?.addEventListener("change", () => clearErr("consent"));
+        document.addEventListener("change", (e) => {
+            if (e.target && e.target.name === "Skills") {
+                const any = [...document.querySelectorAll('input[name="Skills"]:checked')].length > 0;
+                if (any) clearErr("skills");
+            }
+            if (e.target && e.target.name === "Backend Skills") {
+                const any = [...document.querySelectorAll('input[name="Backend Skills"]:checked')].length > 0;
+                if (any) clearErr("be_skills");
+            }
+            if (e.target && e.target.name === "SEO Skills") {
+                const any = [...document.querySelectorAll('input[name="SEO Skills"]:checked')].length > 0;
+                if (any) clearErr("seo_skills");
+            }
+        });
+
+        // ---------- Input filters: numbers-only behavior ----------
+        // Prevent invalid chars in type=number (disallow e/E/+/-; allow '.' only where step has decimal)
+        function guardNumberInput(ev) {
+            const el = ev.target;
+            if (el.tagName !== "INPUT" || el.type !== "number") return;
+            const k = ev.key;
+            const stepAttr = el.getAttribute("step") || "";
+            const allowDot = stepAttr.includes(".");
+            const blocked = ["e", "E", "+", "-"].includes(k) || (!allowDot && k === ".");
+            if (blocked) ev.preventDefault();
+        }
+        document.addEventListener("keydown", guardNumberInput, true);
+
+        // Digits-only for salary & phone; country code sanitized to + and up to 3 digits
+        function digitsOnlyInput(el) {
+            el.value = (el.value || "").replace(/\D+/g, "");
+        }
+        $("salary")?.addEventListener("input", () => digitsOnlyInput($("salary")));
+        $("phone")?.addEventListener("input", () => digitsOnlyInput($("phone")));
+        $("phone_cc")?.addEventListener("input", () => {
+            let v = $("phone_cc").value || "";
+            v = v.replace(/^\+?/, "+");
+            v = "+" + v.slice(1).replace(/\D+/g, "").slice(0, 3);
+            $("phone_cc").value = v.slice(0, 4);
+        });
+
+        function setAvailabilityMinOnFocus() {
+            setAvailabilityMin();
+        }
+        $("availability")?.addEventListener("focus", setAvailabilityMinOnFocus);
+
+        // ---------- Submit (AJAX) ----------
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            // bot honeypot
+            if (form.querySelector('input[name="_honey"]')?.value) return;
+
+            // Validate all
+            const ids = ["first_name", "last_name", "email", "phone_cc", "phone", "experience", "availability", "location", "linkedin", "portfolio", "salary", "recent_projects", "cover_letter", "resume_file", "consent"];
+            let ok = true;
+            ids.forEach(id => { if (!validateField(id)) ok = false; });
+            if (!validateRoleSpecific()) ok = false;
+            if (!ok) { toast("Please fix the highlighted fields and try again.", "error"); scrollToFirstError(); return; }
+
+            // Build FormData (POST to FormSubmit)
+            const data = new FormData(form);
+            data.append("Phone (Full)", `${$("phone_cc").value.trim()} ${$("phone").value.trim()}`);
+
+            // Dynamic subject with role
+            const subj = document.querySelector('#_subject');
+            if (subj) subj.value = `New Job Application – ${role} – NexusXperts`;
+
+            // Loading
+            submitBtn.disabled = true;
+            submitBtn.classList.add("opacity-70", "cursor-not-allowed");
+            submitText.textContent = "Sending...";
+            status.textContent = "";
+
+            try {
+                const res = await fetch(form.action, {
+                    method: "POST",
+                    body: data,
+                    headers: { Accept: "application/json" }
+                });
+
+                if (res.ok) {
+                    toast("Application submitted successfully. Thank you!", "success");
+                    status.textContent = "Your application has been submitted."; // SR only
+                    form.reset();
+                    $("phone_cc").value = "+92"; // reset default
+                    setAvailabilityMin(); // reapply min and clear past values
+                } else {
+                    let msg = "Submission failed. Please try again.";
+                    try { const j = await res.json(); if (j?.message) msg = j.message; } catch { }
+                    toast(msg, "error");
+                    status.textContent = msg; // SR only
+                }
+            } catch (err) {
+                toast("Network error. Please check your connection.", "warn");
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.classList.remove("opacity-70", "cursor-not-allowed");
+                submitText.textContent = "Submit Application";
+            }
+        });
+    </script>
 </body>
+
 </html>
