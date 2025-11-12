@@ -453,7 +453,7 @@
 
         // ---------- Validation ----------
         const MIN_BYTES = 1 * 1024;           // 1 KB
-        const MAX_BYTES = 5 * 1024 * 1024;    // 5 MB (inclusive)
+        const MAX_BYTES = 10 * 1024 * 1024;    // 10 MB (inclusive)
 
         const validators = {
             first_name: v => v.length > 0 || "This field is required.",
