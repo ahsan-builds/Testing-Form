@@ -28,7 +28,7 @@
   <!-- Toast root -->
   <div id="toast-root" class="fixed top-4 right-4 z-[100] space-y-3 pointer-events-none"></div>
 
-  <!-- Hidden iframe target (prevents page navigation; enables same-origin success check) -->
+  <!-- Hidden iframe target (prevents page navigation) -->
   <iframe id="form-target" name="form-target" style="display:none;width:0;height:0;border:0;"></iframe>
 
   <!-- Breadcrumb -->
@@ -86,7 +86,6 @@
       <input type="hidden" name="_template" value="table" />
       <input type="hidden" name="_captcha" value="false" />
       <input type="hidden" name="_url" value="https://nexusxperts.com/apply" />
-      <!-- IMPORTANT: _next points to SAME PAGE with ?sent=1; it will load in the iframe -->
       <input type="hidden" name="_next" value="https://www.nexusxperts.com/apply?sent=1" />
       <!-- Honeypot -->
       <div class="hidden" aria-hidden="true">
@@ -274,6 +273,9 @@
     const status = $("form-status");
     const iframe = document.getElementById("form-target");
 
+    // Flags for success toast after iframe submission
+    let submitInFlight = false;
+
     function setErr(id, msg) {
       const el = $(id); const err = document.querySelector(`[data-err="${id}"]`);
       if (!el || !err) return;
@@ -300,6 +302,45 @@
       if (target && typeof target.scrollIntoView === "function") {
         target.scrollIntoView({ behavior: "smooth", block: "center" });
         if (firstInvalid && typeof firstInvalid.focus === "function") firstInvalid.focus({ preventScroll: true });
+      }
+    }
+
+    // Specific invalid-field toast
+    function toastFirstInvalid() {
+      let invalidEl = document.querySelector('[aria-invalid="true"]');
+      if (!invalidEl) {
+        const firstErrNote = document.querySelector('[data-err]:not(.hidden)');
+        if (firstErrNote) {
+          const id = firstErrNote.getAttribute('data-err');
+          invalidEl = id ? document.getElementById(id) : null;
+        }
+      }
+      if (!invalidEl) { toast("Please fix the highlighted fields and try again.", "error"); return; }
+
+      let fieldLabel = "";
+      if (invalidEl.tagName === "FIELDSET") {
+        const legend = invalidEl.querySelector("legend");
+        fieldLabel = legend ? legend.textContent.trim() : "";
+      } else if (invalidEl.id) {
+        const lbl = document.querySelector(`label[for="${invalidEl.id}"]`);
+        fieldLabel = lbl ? lbl.textContent.replace(/\s*\*+\s*$/,"").trim() : "";
+      }
+      if (!fieldLabel) fieldLabel = "This field";
+
+      let errText = "";
+      if (invalidEl.id) {
+        const err = document.querySelector(`[data-err="${invalidEl.id}"]`);
+        errText = (err && err.textContent.trim()) ? err.textContent.trim() : "";
+      }
+      const msg = errText ? `${fieldLabel}: ${errText}` : `${fieldLabel} is required.`;
+
+      toast(msg, "error");
+
+      if (typeof invalidEl.scrollIntoView === "function") {
+        invalidEl.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+      if (typeof invalidEl.focus === "function") {
+        invalidEl.focus({ preventScroll: true });
       }
     }
 
@@ -374,7 +415,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <div>
             <label class="block text-sm mb-1">Typical monthly Ads budget handled (USD) <span class="text-red-600">*</span></label>
-            <input id="ads_budget" name="Monthly Ads Budget (USD)" type="number" min="0" step="100" class="w-full h-12 px-4 bg-transparent border border-gray-300 dark:border-gray-600 rounded-xl"/>
+            <input id="ads_budget" name="Monthly Ads Budget (USD)" type="number" min="0" step="100" class="w-full h-12 px-4 bg-transparent border border-gray-300 dark-border-gray-600 rounded-xl"/>
             <p data-err="ads_budget" class="mt-1 text-xs text-red-600 hidden"></p>
           </div>
           <div>
@@ -391,8 +432,8 @@
     };
     rs.innerHTML = blocks[role] || `
       <div>
-        <label class="block text-sm mb-1">Primary Skillset <span class="text-red-600">*</span></label>
-        <input id="gen_primary" name="Primary Skillset" type="text" placeholder="e.g., Frontend, Backend, SEO" class="w-full h-12 px-4 bg-transparent border border-gray-300 dark:border-gray-600 rounded-xl"/>
+        <label class="block text-sm mb-1">Primary Skillset / Tech Stack <span class="text-red-600">*</span></label>
+        <input id="gen_primary" name="Primary Skillset" type="text" placeholder="e.g., Frontend (React, Next.js) or Backend (FastAPI, PostgreSQL)" class="w-full h-12 px-4 bg-transparent border border-gray-300 dark:border-gray-600 rounded-xl"/>
         <p data-err="gen_primary" class="mt-1 text-xs text-red-600 hidden"></p>
       </div>`;
 
@@ -453,7 +494,8 @@
         if (file.size < MIN_BYTES) return "File too small (min 1 KB).";
         if (file.size > MAX_BYTES) return "File too large (max 5 MB).";
         return true;
-      }
+      },
+      consent: v => v === true || "Consent is required."
     };
 
     function validateField(id) {
@@ -507,7 +549,7 @@
     // Clear errors on input/change
     ["first_name","last_name","email","phone_cc","phone","experience","availability","location","linkedin","portfolio","salary","cover_letter","recent_projects"]
       .forEach(id => { $(id)?.addEventListener("input", () => clearErr(id)); $(id)?.addEventListener("change", () => clearErr(id)); });
-    $("consent")?.addEventListener("change", () => clearErr("consent"));
+    document.getElementById("consent")?.addEventListener("change", () => clearErr("consent"));
     document.addEventListener("change", (e) => {
       if (e.target?.name === "Skills") { if ([...document.querySelectorAll('input[name="Skills"]:checked')].length) clearErr("skills"); }
       if (e.target?.name === "Backend Skills") { if ([...document.querySelectorAll('input[name="Backend Skills"]:checked')].length) clearErr("be_skills"); }
@@ -528,17 +570,17 @@
 
     // digits-only helpers
     function digitsOnlyInput(el) { el.value = (el.value || "").replace(/\D+/g, ""); }
-    $("salary")?.addEventListener("input", () => digitsOnlyInput($("salary")));
-    $("phone")?.addEventListener("input", () => digitsOnlyInput($("phone")));
-    $("phone_cc")?.addEventListener("input", () => {
-      let v = $("phone_cc").value || "";
+    document.getElementById("salary")?.addEventListener("input", () => digitsOnlyInput(document.getElementById("salary")));
+    document.getElementById("phone")?.addEventListener("input", () => digitsOnlyInput(document.getElementById("phone")));
+    document.getElementById("phone_cc")?.addEventListener("input", () => {
+      let v = document.getElementById("phone_cc").value || "";
       v = v.replace(/^\+?/, "+");
       v = "+" + v.slice(1).replace(/\D+/g, "").slice(0, 3);
-      $("phone_cc").value = v.slice(0, 4);
+      document.getElementById("phone_cc").value = v.slice(0, 4);
     });
 
     // availability min refresh
-    $("availability")?.addEventListener("focus", () => setAvailabilityMin());
+    document.getElementById("availability")?.addEventListener("focus", () => setAvailabilityMin());
 
     // Submit: validate, then let the browser POST to iframe (keeps files)
     form.addEventListener("submit", (e) => {
@@ -549,48 +591,56 @@
       ids.forEach(id => { if (!validateField(id)) ok = false; });
       if (!validateRoleSpecific()) ok = false;
 
+      // EXTRA hard guard for consent (explicit)
+      const consentEl = document.getElementById("consent");
+      if (consentEl && !consentEl.checked) {
+        setErr("consent","Consent is required.");
+        ok = false;
+      }
+
       const subj = document.querySelector('#_subject');
       if (subj) subj.value = `New Job Application – ${role} – NexusXperts`;
-      const cc = $("phone_cc")?.value?.trim() || "";
-      const ph = $("phone")?.value?.trim() || "";
-      $("phone_full").value = `${cc} ${ph}`.trim();
+      const cc = document.getElementById("phone_cc")?.value?.trim() || "";
+      const ph = document.getElementById("phone")?.value?.trim() || "";
+      document.getElementById("phone_full").value = `${cc} ${ph}`.trim();
 
       if (!ok) {
         e.preventDefault();
         status.textContent = "Please fix the highlighted fields and try again.";
+        toastFirstInvalid();
         scrollToFirstError();
       } else {
         status.textContent = "";
-        // Let the browser submit to the hidden iframe
+        submitInFlight = true; // next iframe load => success toast
       }
     });
 
-    // Listen for iframe load -> when it lands on our own _next URL (?sent=1), show toast and reset.
+    // Success toast after iframe loads (no page redirect)
     iframe.addEventListener("load", () => {
-      try {
-        // Cross-origin loads (formsubmit page) will throw on access; we ignore those.
-        const ifw = iframe.contentWindow;
-        const href = ifw?.location?.href || "";
-        // Only proceed when it's our own domain (same-origin) AND has ?sent=1
-        if (href && href.indexOf(location.origin) === 0) {
-          const hasSent = urlParam("sent", ifw.location.search) === "1";
-          if (hasSent) {
-            toast("Application submitted successfully. Thank you!", "success");
-            // Reset form and UI state
-            form.reset();
-            document.getElementById("phone_cc").value = "+92";
-            // Clear min(date) again
-            (function refreshMin(){ const el=document.getElementById('availability'); if(el){ const d=new Date(); d.setHours(0,0,0,0); const y=d.getFullYear(), m=String(d.getMonth()+1).padStart(2,'0'), da=String(d.getDate()).padStart(2,'0'); el.min=`${y}-${m}-${da}`; } })();
-            // Clear iframe to a blank doc to avoid re-firing on back/refresh
-            iframe.src = "about:blank";
-          }
+      if (!submitInFlight) return;
+      toast("Application submitted successfully. Thank you!", "success");
+      form.reset();
+
+      // restore defaults wiped by reset
+      document.getElementById("phone_cc").value = "+92";
+      // RE-APPLY the role value so it doesn't disappear
+      document.getElementById("role").value = role;
+
+      // refresh min(date)
+      (function refreshMin(){
+        const el = document.getElementById('availability');
+        if (el) {
+          const d = new Date(); d.setHours(0,0,0,0);
+          const y=d.getFullYear(), m=String(d.getMonth()+1).padStart(2,'0'), da=String(d.getDate()).padStart(2,'0');
+          el.min = `${y}-${m}-${da}`;
         }
-      } catch (_) {
-        // Cross-origin: do nothing
-      }
+      })();
+
+      // prevent duplicate toasts
+      iframe.src = "about:blank";
+      submitInFlight = false;
     });
 
-    // (No page-level sent=1 handling needed now; the toast is driven by iframe's _next)
   </script>
 </body>
 </html>
