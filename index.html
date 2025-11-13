@@ -2,577 +2,686 @@
 <html lang="en" class="scroll-smooth">
 
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Business - NexusXperts</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>NexusXperts</title>
 
-  <!-- Tailwind build -->
-  <link rel="stylesheet" href="output.css" />
-  <!-- Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <!-- Favicon -->
-  <link rel="icon" href="Assets/Logo.png" />
+    <!-- Tailwind -->
+    <link rel="stylesheet" href="output.css" />
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="icon" href="Assets/Logo.png" />
+
+    <script>
+        /* Prevent dark-mode FOUC */
+        try {
+            const m = localStorage.getItem("theme");
+            if (m === "dark" || (!m && matchMedia("(prefers-color-scheme: dark)").matches)) {
+                document.documentElement.classList.add("dark");
+            }
+        } catch { }
+    </script>
 </head>
 
-<body class="bg-nexus-light dark:bg-nexus-gradient text-[#263d83] dark:text-white min-h-screen flex flex-col mx-auto">
-  <script src="Theme.js"></script>
+<body class="bg-nexus-light dark:bg-nexus-gradient text-[#263d83] dark:text-white min-h-screen flex flex-col">
+    <script src="Theme.js"></script>
 
-  <!-- TOAST ROOT (top-right) -->
-  <div id="toast-root" class="fixed top-4 right-4 z-[100] space-y-3 pointer-events-none"></div>
+    <!-- Toast root -->
+    <div id="toast-root" class="fixed top-4 right-4 z-[100] space-y-3 pointer-events-none"></div>
 
-  <!-- WIDTH-ONLY CONTAINER -->
-  <div class="w-full mx-auto
-              max-w-screen-xl
-              xl:max-w-[1540px]
-              2xl:max-w-[1640px]
-              min-[1920px]:max-w-[1760px]
-              min-[2560px]:max-w-[2200px]">
+    <!-- Hidden iframe target (prevents page navigation) -->
+    <iframe id="form-target" name="form-target" style="display:none;width:0;height:0;border:0;"></iframe>
 
-    <!-- Breadcrumb (compact on mobile) -->
-    <div class="fixed z-50 left-2 top-3 sm:left-5 sm:top-5">
-      <nav aria-label="Breadcrumb" class="bg-black/30 dark:bg-white/10 backdrop-blur-md
-                  px-2.5 py-1.5 sm:px-4 sm:py-2
-                  border border-white/15">
-        <ol class="flex items-center gap-1.5 sm:gap-3
-                   text-[11px] sm:text-sm md:text-base
-                   text-zinc-100 dark:text-zinc-200
-                   max-w-[90vw] sm:max-w-none">
-          <!-- Home -->
-          <li class="min-w-0">
-            <a href="index.html" class="inline-flex items-center gap-1.5 sm:gap-2 hover:text-white dark:hover:text-white font-medium
-                      max-w-[38vw] sm:max-w-none truncate">
-              <svg class="w-3.5 h-3.5 sm:w-5 sm:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M3 9.5L12 3l9 6.5V21a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1V9.5z"></path>
-              </svg>
-              <span class="truncate">Home</span>
-            </a>
-          </li>
-
-          <!-- Separator -->
-          <li aria-hidden="true" class="px-0.5 sm:px-0 mt-[1px]">
-            <svg class="w-3.5 h-4 sm:w-4 sm:h-5 text-zinc-300 dark:text-zinc-100" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="9 18 15 12 9 6"></polyline>
-            </svg>
-          </li>
-
-          <!-- Current Page -->
-          <li class="font-semibold text-white dark:text-zinc-100 tracking-wide min-w-0">
-            <span class="truncate max-w-[44vw] sm:max-w-none">Business</span>
-          </li>
-        </ol>
-      </nav>
+    <!-- Breadcrumb -->
+    <div class="fixed z-40 left-2 sm:left-5 mt-5">
+        <nav aria-label="Breadcrumb"
+            class="bg-black/30 dark:bg-white/10 backdrop-blur-md px-2.5 py-1.5 sm:px-4 sm:py-2 border border-white/15">
+            <ol
+                class="flex items-center gap-1.5 sm:gap-3 text-xs sm:text-base text-zinc-100 dark:text-zinc-200 max-w-[92vw] sm:max-w-none">
+                <li class="min-w-0">
+                    <a href="index.html"
+                        class="inline-flex items-center gap-1.5 sm:gap-2 hover:text-white dark:hover:text-white font-medium max-w-[38vw] sm:max-w-none truncate">
+                        <svg class="w-4 h-4 sm:w-5 sm:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M3 9.5L12 3l9 6.5V21a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1V9.5z"></path>
+                        </svg>
+                        <span class="truncate">Home</span>
+                    </a>
+                </li>
+                <li aria-hidden="true" class="px-0.5 sm:px-0 mt-0.9">
+                    <svg class="w-3.5 h-4 sm:w-4 sm:h-5 text-zinc-300 dark:text-zinc-100" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </li>
+                <li class="min-w-0">
+                    <a href="Careers.html#jobs"
+                        class="inline-flex items-center gap-1.5 sm:gap-2 hover:text-white dark:hover:text-white font-medium max-w-[38vw] sm:max-w-none truncate">
+                        <span class="truncate">Careers</span>
+                    </a>
+                </li>
+                <li aria-hidden="true" class="px-0.5 sm:px-0 mt-1">
+                    <svg class="w-3.5 h-4 sm:w-4 sm:h-5 text-zinc-300 dark:text-zinc-100" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </li>
+                <li class="font-semibold text-white dark:text-zinc-100 tracking-wide min-w-0">
+                    <span id="crumb-role" class="truncate max-w-[44vw] sm:max-w-none">Apply</span>
+                </li>
+            </ol>
+        </nav>
     </div>
 
-    <!-- HERO -->
-    <header class="relative w-full min-h-[80vh] sm:min-h-[90vh] lg:min-h-[100vh]">
-      <img src="Assets/Build.webp" alt="Business Banner"
-        class="absolute inset-0 w-full h-full object-cover dark:brightness-100 dark:invert" />
-      <div class="absolute inset-0 dark:bg-black/30"></div>
+    <!-- Main -->
+    <main class="w-full mx-auto max-w-3xl px-4 sm:px-6 py-10 pt-16 sm:pt-10 mt-12 sm:mt-16">
+        <h1 id="page-title" class="text-2xl sm:text-3xl font-bold mb-2">Application</h1>
+        <p id="page-sub" class="mb-8 text-sm sm:text-base dark:text-gray-300">Please complete the application below.
+            Fields may change based on the role.</p>
 
-      <div class="relative flex items-center h-full px-4 sm:px-6 lg:px-10">
-        <div class="max-w-4xl text-left mt-16">
-          <h1 class="text-2xl sm:text-4xl md:text-5xl font-bold mb-4">Let's Talk Business</h1>
-          <p class="text-gray-700 dark:text-gray-300 text-base sm:text-lg md:text-xl max-w-2xl lg:max-w-3xl mb-6">
-            We're excited to connect with ambitious individuals and forward-thinking businesses. Our goal is to
-            explore meaningful opportunities, foster lasting partnerships, and collaborate on projects that
-            drive innovation.
-          </p>
-          <div class="mt-6 flex flex-col sm:flex-row gap-3">
-            <!-- border-only button to match Blogs pattern -->
-            <a href="#contact"
-              class="inline-flex items-center justify-center gap-2 bg-white text-[#263d83] border border-[#263d83] hover:bg-[#263d83] hover:text-white px-6 py-3 rounded-none font-semibold transition">
-              Start the Conversation <i class="fa-solid fa-paper-plane"></i>
-            </a>
-          </div>
-        </div>
-      </div>
-    </header>
-
-    <!-- CONTACT FORM -->
-    <section id="contact" class="py-16 sm:py-20" style="font-family: Arial, sans-serif;">
-      <!-- border-only panel, square edges, no shadow + BG color -->
-      <div class="max-w-3xl mx-auto px-4 sm:px-6 border-2 border-[#263d83]/20 dark:border-white/20 rounded-none
-                  bg-[#F6F8FF] dark:bg-white/5">
-        <div class="p-6 sm:p-8 md:p-10">
-          <h2 class="text-2xl sm:text-3xl font-bold mb-3 text-[#263d83] dark:text-white">Start the Conversation</h2>
-          <p class="dark:text-gray-300 mb-8">Fill out the form below and we'll respond as soon as possible.</p>
-
-          <form id="biz-form" action="https://formsubmit.co/contact@nexusxperts.com" method="POST"
-            class="space-y-5 dark:text-white" novalidate>
+        <!-- Submit to hidden iframe (no page redirect) -->
+        <form id="apply-form" action="https://formsubmit.co/contact@nexusxperts.com" method="POST"
+            enctype="multipart/form-data" target="form-target"
+            class="space-y-6 border-2 border-[#263d83]/20 dark:border-white/20 p-6 sm:p-8"
+            style="font-family: Arial, Helvetica, sans-serif;" novalidate>
             <!-- FormSubmit controls -->
-            <input type="hidden" name="_subject" value="New Business Inquiry - nexusxperts.com" />
+            <input type="hidden" name="_subject" id="_subject" value="New Job Application – NexusXperts" />
             <input type="hidden" name="_template" value="table" />
             <input type="hidden" name="_captcha" value="false" />
-            <input type="hidden" name="_url" value="https://nexusxperts.com/business" />
-            <input type="hidden" name="_next" value="https://nexusxperts.com/thanks.html" />
-
+            <input type="hidden" name="_url" value="https://nexusxperts.com/apply" />
+            <input type="hidden" name="_next" value="https://www.nexusxperts.com/apply?sent=1" />
             <!-- Honeypot -->
             <div class="hidden" aria-hidden="true">
-              <label for="_honey">Do not fill this out</label>
-              <input type="text" id="_honey" name="_honey" tabindex="-1" autocomplete="off" />
+                <label for="_honey">Do not fill this out</label>
+                <input type="text" id="_honey" name="_honey" tabindex="-1" autocomplete="off" />
             </div>
 
-            <!-- First + Last Name -->
+            <!-- Role -->
+            <div>
+                <label for="role" class="block text-sm mb-1">Position Applying For <span
+                        class="text-red-600">*</span></label>
+                <input id="role" name="Position" type="text" readonly
+                    class="w-full h-12 px-4 bg-zinc-100 dark:bg-white/10 border border-gray-300 dark:border-gray-600" />
+            </div>
+
+            <!-- Name -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-              <div>
-                <label for="first_name" class="block text-sm mb-1 text-[#263d83] dark:text-white">
-                  First Name <span class="text-red-600">*</span>
-                </label>
-                <input id="first_name" name="first_name" required type="text" placeholder="Enter first name"
-                  autocomplete="given-name"
-                  class="w-full h-12 px-4 bg-white/70 dark:bg-transparent border border-[#263d83]/30 dark:border-white/20 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-0 focus:border-[#4966AE] rounded-none" />
-                <p data-err="first_name" class="mt-1 text-xs text-red-600 hidden"></p>
-              </div>
-              <div>
-                <label for="last_name" class="block text-sm mb-1 text-[#263d83] dark:text-white">
-                  Last Name <span class="text-red-600">*</span>
-                </label>
-                <input id="last_name" name="last_name" required type="text" placeholder="Enter last name"
-                  autocomplete="family-name"
-                  class="w-full h-12 px-4 bg-white/70 dark:bg-transparent border border-[#263d83]/30 dark:border-white/20 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-0 focus:border-[#4966AE] rounded-none" />
-                <p data-err="last_name" class="mt-1 text-xs text-red-600 hidden"></p>
-              </div>
+                <div>
+                    <label for="first_name" class="block text-sm mb-1">First Name <span
+                            class="text-red-600">*</span></label>
+                    <input id="first_name" name="First Name" type="text" required placeholder="Enter first name"
+                        autocomplete="given-name"
+                        class="w-full h-12 px-4 bg-transparent border border-gray-300 dark:border-gray-600" />
+                    <p data-err="first_name" class="mt-1 text-xs text-red-600 hidden"></p>
+                </div>
+                <div>
+                    <label for="last_name" class="block text-sm mb-1">Last Name <span
+                            class="text-red-600">*</span></label>
+                    <input id="last_name" name="Last Name" type="text" required placeholder="Enter last name"
+                        autocomplete="family-name"
+                        class="w-full h-12 px-4 bg-transparent border border-gray-300 dark:border-gray-600" />
+                    <p data-err="last_name" class="mt-1 text-xs text-red-600 hidden"></p>
+                </div>
             </div>
 
-            <!-- Email -->
-            <div>
-              <label for="email" class="block text-sm mb-1 text-[#263d83] dark:text-white">
-                Email <span class="text-red-600">*</span>
-              </label>
-              <input id="email" name="email" required type="email" placeholder="someone@example.com"
-                autocomplete="email"
-                class="w-full h-12 px-4 bg-white/70 dark:bg-transparent border border-[#263d83]/30 dark:border-white/20 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-0 focus:border-[#4966AE] rounded-none" />
-              <p data-err="email" class="mt-1 text-xs text-red-600 hidden"></p>
-            </div>
-
-            <!-- Phone (Worldwide) -->
-            <div>
-              <label class="block text-sm mb-1 text-[#263d83] dark:text-white">
-                Phone Number <span class="text-red-600">*</span>
-              </label>
-              <div class="flex gap-2">
-                <input id="phone_cc" name="phone_cc" required type="text" inputmode="numeric" placeholder="+92"
-                  value="+92" pattern="^\\+\\d{1,4}$" maxlength="5"
-                  class="w-28 h-12 px-3 bg-white/70 dark:bg-transparent border border-[#263d83]/30 dark:border-white/20 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-0 focus:border-[#4966AE] rounded-none" />
-                <input id="phone" name="phone" required type="text" inputmode="numeric" placeholder="e.g., 3001234567"
-                  pattern="^\\d{6,15}$" maxlength="15"
-                  class="w-full h-12 px-4 bg-white/70 dark:bg-transparent border border-[#263d83]/30 dark:border-white/20 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-0 focus:border-[#4966AE] rounded-none" />
-              </div>
-              <p class="text-xs text-gray-600 mt-1">
-                Country code: <strong>+ and 1–4 digits</strong> (e.g., +1, +44, +92). Number: <strong>6–15
-                  digits</strong>, no spaces.
-              </p>
-              <p data-err="phone_cc" class="mt-1 text-xs text-red-600 hidden"></p>
-              <p data-err="phone" class="mt-1 text-xs text-red-600 hidden"></p>
-            </div>
-
-            <!-- Budget + Company -->
+            <!-- Contact -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-              <div>
-                <label for="budget" class="block text-sm mb-1 text-[#263d83] dark:text-white">
-                  Budget <span class="text-red-600">*</span>
-                </label>
-                <input id="budget" name="budget" required type="text" placeholder="Your Budget" autocomplete="off"
-                  class="w-full h-12 px-4 bg-white/70 dark:bg-transparent border border-[#263d83]/30 dark:border-white/20 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-0 focus:border-[#4966AE] rounded-none" />
-                <p data-err="budget" class="mt-1 text-xs text-red-600 hidden"></p>
-              </div>
-              <div>
-                <label for="company" class="block text-sm mb-1 text-[#263d83] dark:text-white">
-                  Company Name <span class="text-red-600">*</span>
-                </label>
-                <input id="company" name="company" required type="text" placeholder="Your company name"
-                  autocomplete="organization"
-                  class="w-full h-12 px-4 bg-white/70 dark:bg-transparent border border-[#263d83]/30 dark:border-white/20 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-0 focus:border-[#4966AE] rounded-none" />
-                <p data-err="company" class="mt-1 text-xs text-red-600 hidden"></p>
-              </div>
+                <div>
+                    <label for="email" class="block text-sm mb-1">Email <span class="text-red-600">*</span></label>
+                    <input id="email" name="Email" type="email" required placeholder="someone@example.com"
+                        autocomplete="email"
+                        class="w-full h-12 px-4 bg-transparent border border-gray-300 dark:border-gray-600" />
+                    <p data-err="email" class="mt-1 text-xs text-red-600 hidden"></p>
+                </div>
+                <div>
+                    <label class="block text-sm mb-1">Phone (Worldwide) <span class="text-red-600">*</span></label>
+                    <div class="flex gap-2">
+                        <input id="phone_cc" name="Phone Country Code" required type="text" inputmode="numeric"
+                            placeholder="+92" value="+92" pattern="^\+\d{1,4}$" maxlength="5"
+                            class="w-28 h-12 px-3 bg-transparent border border-gray-300 dark:border-gray-600" />
+                        <input id="phone" name="Phone Number" required type="text" inputmode="numeric"
+                            placeholder="e.g., 3001234567" pattern="^\d{6,15}$" maxlength="15"
+                            class="w-full h-12 px-4 bg-transparent border border-gray-300 dark:border-gray-600" />
+                    </div>
+                    <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Use your country code (e.g., +1, +44, +61,
+                        +92) and 6–15 digit number.</p>
+                    <p data-err="phone_cc" class="mt-1 text-xs text-red-600 hidden"></p>
+                    <p data-err="phone" class="mt-1 text-xs text-red-600 hidden"></p>
+                </div>
             </div>
 
-            <!-- Domain + Region -->
+            <!-- Meta -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-              <div>
-                <label for="domain" class="block text-sm mb-1 text-[#263d83] dark:text-white">
-                  Company Domain / URL
-                </label>
-                <input id="domain" name="domain" type="url" placeholder="https://yourcompany.com" inputmode="url"
-                  autocomplete="url"
-                  class="w-full h-12 px-4 bg-white/70 dark:bg-transparent border border-[#263d83]/30 dark:border-white/20 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-0 focus:border-[#4966AE] rounded-none" />
-                <p data-err="domain" class="mt-1 text-xs text-red-600 hidden"></p>
-              </div>
-              <div>
-                <label for="region" class="block text-sm mb-1 text-[#263d83] dark:text-white">
-                  Region <span class="text-red-600">*</span>
-                </label>
-                <select id="region" name="region" required
-                  class="w-full h-12 px-4 bg-white/70 dark:bg-transparent border border-[#263d83]/30 dark:border-white/20 focus:outline-none focus:ring-0 focus:border-[#4966AE] rounded-none text-[#263d83] dark:text-white">
-                  <option class="text-black" value="">Please Select</option>
-                  <option class="text-[#263d83]" value="asia">Asia</option>
-                  <option class="text-[#263d83]" value="europe">Europe</option>
-                  <option class="text-[#263d83]" value="america">America</option>
-                  <option class="text-[#263d83]" value="africa">Africa</option>
-                  <option class="text-[#263d83]" value="australia">Australia</option>
-                </select>
-                <p data-err="region" class="mt-1 text-xs text-red-600 hidden"></p>
-              </div>
+                <div>
+                    <label for="experience" class="block text-sm mb-1">Total Experience (Years) <span
+                            class="text-red-600">*</span></label>
+                    <input id="experience" name="Experience (Years)" type="number" min="0" step="0.5" required
+                        placeholder="e.g., 3"
+                        class="w-full h-12 px-4 bg-transparent border border-gray-300 dark:border-gray-600" />
+                    <p data-err="experience" class="mt-1 text-xs text-red-600 hidden"></p>
+                </div>
+                <div>
+                    <label for="availability" class="block text-sm mb-1">Earliest Start Date <span
+                            class="text-red-600">*</span></label>
+                    <input id="availability" name="Availability" type="date" required
+                        class="w-full h-12 px-4 bg-transparent border border-gray-300 dark:border-gray-600" />
+                    <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">We accept dates from today onward (not in
+                        the past).</p>
+                    <p data-err="availability" class="mt-1 text-xs text-red-600 hidden"></p>
+                </div>
             </div>
 
-            <!-- Services -->
+            <!-- Location -->
             <div>
-              <label for="services" class="block text-sm mb-1 text-[#263d83] dark:text-white">
-                Services you're looking for <span class="text-red-600">*</span>
-              </label>
-              <select id="services" name="services" required
-                class="w-full h-12 px-4 bg-white/70 dark:bg-transparent border border-[#263d83]/30 dark:border-white/20 placeholder-[#263d83] dark:placeholder-[#263d83] focus:outline-none focus:border-[#4966AE] rounded-none text-[#263d83] dark:text-white">
-                <option class="text-black" value="">Select a service</option>
-                <option class="text-[#263d83]">Generative AI/Chatbot</option>
-                <option class="text-[#263d83]">AI & Machine Learning</option>
-                <option class="text-[#263d83]">Web Development</option>
-                <option class="text-[#263d83]">DevOps & Automation</option>
-                <option class="text-[#263d83]">App Design & Develop</option>
-                <option class="text-[#263d83]">Cybersecurity</option>
-                <option class="text-[#263d83]">Cloud Solutions</option>
-                <option class="text-[#263d83]">UI/UX Design</option>
-                <option class="text-[#263d83]">Automation Tools</option>
-                <option class="text-[#263d83]">Digital Marketing</option>
-              </select>
-              <p data-err="services" class="mt-1 text-xs text-red-600 hidden"></p>
+                <label for="location" class="block text-sm mb-1">Current Location <span
+                        class="text-red-600">*</span></label>
+                <input id="location" name="Location" type="text" required placeholder="City, Country"
+                    class="w-full h-12 px-4 bg-transparent border border-gray-300 dark:border-gray-600" />
+                <p data-err="location" class="mt-1 text-xs text-red-600 hidden"></p>
             </div>
 
-            <!-- Project -->
-            <div>
-              <label for="project_details" class="block text-sm mb-1 text-[#263d83] dark:text-white">
-                Project Details <span class="text-red-600">*</span>
-              </label>
-              <textarea id="project_details" name="project_details" required rows="5"
-                placeholder="Tell us about your project..."
-                class="w-full px-4 py-3 bg-white/70 dark:bg-transparent border border-[#263d83]/30 dark:border-white/20 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-0 focus:border-[#4966AE] rounded-none"></textarea>
-              <p data-err="project_details" class="mt-1 text-xs text-red-600 hidden"></p>
+            <!-- Links -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <div>
+                    <label for="linkedin" class="block text-sm mb-1">LinkedIn</label>
+                    <input id="linkedin" name="LinkedIn" type="url" placeholder="https://linkedin.com/in/username"
+                        inputmode="url"
+                        class="w-full h-12 px-4 bg-transparent border border-gray-300 dark:border-gray-600" />
+                    <p data-err="linkedin" class="mt-1 text-xs text-red-600 hidden"></p>
+                </div>
+                <div>
+                    <label for="portfolio" class="block text-sm mb-1">Portfolio / GitHub</label>
+                    <input id="portfolio" name="Portfolio" type="url" placeholder="https://yourportfolio.com"
+                        inputmode="url"
+                        class="w-full h-12 px-4 bg-transparent border border-gray-300 dark:border-gray-600" />
+                    <p data-err="portfolio" class="mt-1 text-xs text-red-600 hidden"></p>
+                </div>
             </div>
+
+            <!-- Resume -->
+            <div>
+                <label for="resume_file" class="block text-sm mb-1">Upload Resume (PDF/DOC/DOCX) <span
+                        class="text-red-600">*</span></label>
+                <input id="resume_file" name="attachment" type="file" required
+                    accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                    class="block w-full border px-3 py-2 bg-transparent border-gray-300 dark:border-gray-600" />
+                <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Min 1 KB, Max 5 MB.</p>
+                <p data-err="resume_file" class="mt-1 text-xs text-red-600 hidden"></p>
+            </div>
+
+            <!-- Expected Salary -->
+            <div>
+                <label for="salary" class="block text-sm mb-1">Expected Salary <span
+                        class="text-red-600">*</span></label>
+                <input id="salary" name="Expected Salary" type="text" required placeholder="e.g., 150000"
+                    class="w-full h-12 px-4 bg-transparent border border-gray-300 dark:border-gray-600" />
+                <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Enter amount in PKR (Rs).</p>
+                <p data-err="salary" class="mt-1 text-xs text-red-600 hidden"></p>
+            </div>
+
+            <!-- Role-Specific Blocks -->
+            <div id="role-specific" class="space-y-6"></div>
+
+            <!-- Recent Projects -->
+            <div>
+                <label for="recent_projects" class="block text-sm mb-1">Recent Projects (list) <span
+                        class="text-red-600">*</span></label>
+                <textarea id="recent_projects" name="Recent Projects" rows="5" required
+                    placeholder="List 2–5 recent projects (each on a new line). You can include short URLs."
+                    class="w-full px-4 py-3 bg-transparent border border-gray-300 dark:border-gray-600"></textarea>
+                <p data-err="recent_projects" class="mt-1 text-xs text-red-600 hidden"></p>
+            </div>
+
+            <!-- Cover Letter -->
+            <div>
+                <label for="cover_letter" class="block text-sm mb-1">Cover Letter / Summary <span
+                        class="text-red-600">*</span></label>
+                <textarea id="cover_letter" name="Cover Letter" rows="6" required
+                    placeholder="Briefly tell us why you're a great fit..."
+                    class="w-full px-4 py-3 bg-transparent border border-gray-300 dark:border-gray-600"></textarea>
+                <p data-err="cover_letter" class="mt-1 text-xs text-red-600 hidden"></p>
+            </div>
+
+            <!-- Consent -->
+            <div class="flex items-start gap-3">
+                <input id="consent" name="Consent" type="checkbox" value="I agree" required
+                    class="mt-1 h-4 w-4 border border-gray-300 dark:border-gray-600" />
+                <label for="consent" class="text-sm">I agree my information may be used to evaluate my application in
+                    accordance with NexusXperts’ privacy policy. <span class="text-red-600">*</span></label>
+            </div>
+            <p data-err="consent" class="mt-1 text-xs text-red-600 hidden"></p>
+
+            <!-- Combined phone for email body -->
+            <input type="hidden" name="Phone (Full)" id="phone_full" />
 
             <!-- Submit -->
             <button type="submit" id="submitBtn"
-              class="flex items-center justify-center gap-2 bg-white text-[#263d83] border border-[#263d83] hover:bg-[#263d83] hover:text-white px-6 py-3 rounded-none font-semibold transition w-full sm:w-auto">
-              <span>Send Message</span>
-              <i class="fa-solid fa-paper-plane" aria-hidden="true"></i>
+                class="flex items-center justify-center gap-2 bg-[#263d83] hover:bg-[#1d2f66] px-6 py-3 font-semibold shadow transition text-white">
+                <span>Submit Application</span>
+                <i class="fa-solid fa-paper-plane" aria-hidden="true"></i>
             </button>
 
-            <!-- Screen-reader only live region -->
+            <!-- SR-only live region -->
             <p id="form-status" class="sr-only" aria-live="polite"></p>
-          </form>
+        </form>
+    </main>
+
+    <footer class="mt-auto border-t border-white/20">
+        <div class="mx-auto w-full max-w-screen-xl px-4 py-6 text-sm text-center">
+            © 2025 <span class="font-semibold">NexusXperts</span>. All rights reserved.
         </div>
-      </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="text-[#263d83] dark:text-gray-300">
-      <div class="mx-auto px-12 py-12 flex flex-col md:flex-row md:justify-between md:items-start gap-12">
-        <!-- About -->
-        <div class="max-w-xs">
-          <h6 class="mb-4 font-semibold text-xl uppercase">NexusXperts</h6>
-          <p class="leading-relaxed mb-6">
-            We deliver AI-powered web and mobile solutions that transform businesses. Partner with us to
-            unlock opportunities and drive real results.
-          </p>
-
-          <!-- Social icons -->
-          <div class="flex gap-5">
-            <a href="https://share.google/I6qkB9UdD4kLe2hla" target="_blank" aria-label="Facebook"
-              class="[&>svg]:w-5 [&>svg]:h-5 hover:text-blue-600 transition">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 320 512">
-                <path
-                  d="M80 299.3V512H196V299.3h86.5l18-97.8H196V166.9c0-51.7 20.3-71.5 72.7-71.5c16.3 0 29.4 .4 37 1.2V7.9C291.4 4 256.4 0 236.2 0C129.3 0 80 50.5 80 159.4v42.1H14v97.8H80z" />
-              </svg>
-            </a>
-            <a href="https://x.com/NexusXperts" target="_blank" aria-label="Twitter"
-              class="[&>svg]:w-5 [&>svg]:h-5 hover:text-sky-500 transition">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 512 512">
-                <path
-                  d="M459.4 151.7c.3 4.5 .3 9.1 .3 13.6c0 138.7-105.6 298.6-298.6 298.6c-59.4 0-114.6-17.1-161.1-47.1c8.4 1 16.6 1.3 25.2 1.3c49.1 0 94.2-16.6 130-44.8c-46.2-1-84.8-31.2-98.1-72.8c6.5 1 13.1 1.6 20 1.6c9.4 0 18.4-1.3 26.9-3.6c-48.1-9.7-84.3-52.1-84.3-103v-1.3c14.3 7.9 30.5 12.7 47.9 13.3c-28.3-18.9-46.8-51.1-46.8-87.8c0-19.4 5.2-37.3 14.6-52.9c51.6 63.4 128.6 104.9 215.3 109.4c-1.6-7.8-2.6-16-2.6-24.3c0-58.6 47.9-106.4 106.4-106.4c30.6 0 58.3 12.9 77.7 33.5c24.3-4.8 47.2-13.6 67.6-25.8c-8 25-25 46.2-47.2 59.4c21.7-2.3 42.9-8.3 62.1-16.6c-14.3 21.3-32.3 40-53.2 55.1z" />
-              </svg>
-            </a>
-            <a href="https://www.linkedin.com/company/nexusxperts/posts/?feedView=all" target="_blank"
-              aria-label="LinkedIn" class="[&>svg]:w-5 [&>svg]:h-5 hover:text-blue-700 transition">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 448 512">
-                <path
-                  d="M100.3 448H7.4V148.9h92.9zM53.8 108.1C24.1 108.1 0 83.5 0 53.8S24.1-.6 53.8-.6s53.8 24.1 53.8 54.4c0 29.8-24.1 54.3-53.8 54.3zm394.1 339.9h-92.7V302.4c0-34.7-.7-79.2-48.3-79.2c-48.3 0-55.7 37.7-55.7 76.7V448h-92.7V148.9h89.1v40.8c12.4-23.5 42.7-48.3 87.9-48.3c94 0 111.3 61.9 111.3 142.3V448z" />
-              </svg>
-            </a>
-            <a href="https://www.instagram.com/nexus_xperts/" target="_blank" aria-label="Instagram"
-              class="[&>svg]:w-5 [&>svg]:h-5 dark:hover:text-pink-200 transition">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                <path
-                  d="M7 2C4.24 2 2 4.24 2 7v10c0 2.76 2.24 5 5 5h10c2.76 0 5-2.24 5-5V7c0-2.76-2.24-5-5-5H7zm10 2c1.66 0 3 1.34 3 3v10c0 1.66-1.34 3-3 3H7c-1.66 0-3-1.34-3-3V7c0-1.66 1.34-3 3-3h10zm-5 3a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0 2a3 3 0 1 1 0 6 3 3 0 0 1 0-6zm4.5-.75a1.25 1.25 0 1 0 0-2.5 1.25 1.25 0 0 0 0 2.5z" />
-              </svg>
-            </a>
-          </div>
-        </div>
-
-        <!-- Services -->
-        <div>
-          <h6 class="mb-4 font-semibold uppercase">Services</h6>
-          <ul class="space-y-2">
-            <li><a href="services.html#ai-ml" class="hover:text-black dark:hover:text-white transition">Generative
-                AI/Chatbot</a></li>
-            <li><a href="services.html#web-dev" class="hover:text-black dark:hover:text-white transition">Web
-                Development</a></li>
-            <li><a href="services.html#digital-marketing"
-                class="hover:text-black dark:hover:text-white transition">Digital Marketing</a></li>
-            <li><a href="services.html#consulting" class="hover:text-black dark:hover:text-white transition">Automation
-                Tools</a></li>
-            <li><a href="services.html#mobile-dev" class="hover:text-black dark:hover:text-white transition">App Design
-                & Develop</a></li>
-            <li><a href="services.html#ui-ux" class="hover:text-black dark:hover:text-white transition">UI/UX Design</a>
-            </li>
-          </ul>
-        </div>
-
-        <!-- Quick Links -->
-        <div>
-          <h6 class="mb-4 font-semibold uppercase">Quick Links</h6>
-          <ul class="space-y-2">
-            <li><a href="index.html" class="hover:text-black dark:hover:text-white transition">Home</a></li>
-            <li><a href="services.html" class="hover:text-black dark:hover:text-white transition">Services</a></li>
-            <li><a href="Careers.html" class="hover:text-black dark:hover:text-white transition">Careers</a>
-            </li>
-            <li><a href="Team.html" class="hover:text-black dark:hover:text-white transition">Our Team</a>
-            </li>
-            <li><a href="Life.html" class="hover:text-black dark:hover:text-white transition">Life At
-                NexusXperts</a></li>
-            <li><a href="contact.html#contact" class="hover:text-black dark:hover:text-white transition">Contact Us</a>
-            </li>
-          </ul>
-        </div>
-
-        <!-- Contact -->
-        <div>
-          <h6 class="mb-4 font-semibold uppercase">Get in Touch</h6>
-          <ul class="space-y-2">
-            <li>Email: <a href="mailto:info@nexusxperts.com"
-                class="hover:text-black dark:hover:text-white transition">info@nexusxperts.com</a></li>
-            <li>Phone: <a href="tel:+923399069000" class="hover:text-black dark:hover:text-white transition">+92 339 906
-                9000</a></li>
-            <li>Location: Pakistan, Lahore</li>
-          </ul>
-        </div>
-      </div>
-
-      <!-- Bottom -->
-      <div class="border-t border-gray-300 dark:border-gray-700 p-6 text-center text-sm">
-        © 2025 <span class="font-semibold">NexusXperts</span>. All rights reserved.
-      </div>
     </footer>
-  </div>
 
-  <!-- Toast + Validation + Submit JS -->
-  <script>
-    // ---- Toast (matched to Apply page style) ----
-    function toast(message, type = "info") {
-      const root = document.getElementById("toast-root");
-      const el = document.createElement("div");
-
-      const accents = {
-        success: "bg-emerald-500",
-        error: "bg-red-500",
-        warn: "bg-amber-500",
-        info: "bg-sky-500",
-      };
-
-      el.className = [
-        "pointer-events-auto",
-        "bg-[#263d83] text-white",            // light mode: primary bg
-        "dark:bg-white dark:text-[#263d83]",  // dark mode: invert
-        "rounded-xl shadow-lg border",        // same rounded + shadow + subtle border
-        "border-white/30 dark:border-[#263d83]/20",
-        "flex items-start gap-3",
-        "w-[min(92vw,420px)] px-4 py-3",
-        "opacity-0 translate-y-2 transition-all duration-200 ease-out"
-      ].join(" ");
-
-      el.innerHTML = `
+    <script>
+        // ---------- Toast ----------
+        function toast(message, type = "info") {
+            const root = document.getElementById("toast-root");
+            const el = document.createElement("div");
+            const accents = { success: "bg-emerald-500", error: "bg-red-500", warn: "bg-amber-500", info: "bg-sky-500" };
+            el.className = [
+                "pointer-events-auto",
+                "bg-[#263d83] text-white", "dark:bg-white dark:text-[#263d83]",
+                "rounded-xl shadow-lg border", "border-white/30 dark:border-[#263d83]/20",
+                "flex items-start gap-3", "w-[min(92vw,420px)] px-4 py-3",
+                "opacity-0 translate-y-2 transition-all duration-200 ease-out"
+            ].join(" ");
+            el.innerHTML = `
         <div class="shrink-0 mt-0.5 w-1.5 h-6 rounded ${accents[type] || accents.info}"></div>
         <div class="text-sm leading-5 grow">${message}</div>
         <button aria-label="Close" class="shrink-0 ml-1 opacity-80 hover:opacity-100 transition">
           <i class="fa-solid fa-xmark"></i>
-        </button>
-      `;
-
-      el.querySelector("button")?.addEventListener("click", () => {
-        el.classList.add("opacity-0", "translate-y-2");
-        setTimeout(() => root.contains(el) && root.removeChild(el), 180);
-      });
-
-      root.appendChild(el);
-      requestAnimationFrame(() => el.classList.remove("opacity-0", "translate-y-2"));
-      setTimeout(() => {
-        if (!root.contains(el)) return;
-        el.classList.add("opacity-0", "translate-y-2");
-        setTimeout(() => root.contains(el) && root.removeChild(el), 180);
-      }, 5000);
-    }
-
-    // ---- Validation helpers ----
-    const form = document.getElementById("biz-form");
-    const status = document.getElementById("form-status");
-    const submitBtn = document.getElementById("submitBtn");
-    const submitText = submitBtn.querySelector("span");
-
-    const fields = {
-      first_name: { required: true },
-      last_name: { required: true },
-      email: {
-        required: true,
-        test: (v) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v),
-        msg: "Enter a valid email address."
-      },
-      phone_cc: {
-        required: true,
-        test: (v) => /^\+\d{1,4}$/.test(v),
-        msg: "Use + and 1–4 digits (e.g., +1, +44, +92)."
-      },
-      phone: {
-        required: true,
-        test: (v) => /^\d{6,15}$/.test(v),
-        msg: "Enter 6–15 digits (no spaces)."
-      },
-      budget: { required: true },
-      company: { required: true },
-      region: {
-        required: true,
-        test: (v) => !!v,
-        msg: "Please select a region."
-      },
-      services: {
-        required: true,
-        test: (v) => !!v,
-        msg: "Please select a service."
-      },
-      project_details: { required: true }
-    };
-
-    function setFieldError(id, message) {
-      const input = document.getElementById(id);
-      const err = document.querySelector(`[data-err="${id}"]`);
-      if (!input || !err) return;
-      input.setAttribute("aria-invalid", "true");
-      input.classList.add("border-red-500");
-      err.textContent = message;
-      err.classList.remove("hidden");
-    }
-
-    function clearFieldError(id) {
-      const input = document.getElementById(id);
-      const err = document.querySelector(`[data-err="${id}"]`);
-      if (!input || !err) return;
-      input.removeAttribute("aria-invalid");
-      input.classList.remove("border-red-500");
-      err.textContent = "";
-      err.classList.add("hidden");
-    }
-
-    function validateForm() {
-      let valid = true;
-      Object.keys(fields).forEach(clearFieldError);
-
-      Object.entries(fields).forEach(([id, rules]) => {
-        const el = document.getElementById(id);
-        if (!el) return;
-        const val = (el.value || "").trim();
-
-        if (rules.required && !val) {
-          setFieldError(id, "This field is required.");
-          valid = false;
-          return;
+        </button>`;
+            el.querySelector("button")?.addEventListener("click", () => {
+                el.classList.add("opacity-0", "translate-y-2");
+                setTimeout(() => root.contains(el) && root.removeChild(el), 180);
+            });
+            root.appendChild(el);
+            requestAnimationFrame(() => el.classList.remove("opacity-0", "translate-y-2"));
+            setTimeout(() => {
+                if (!root.contains(el)) return;
+                el.classList.add("opacity-0", "translate-y-2");
+                setTimeout(() => root.contains(el) && root.removeChild(el), 180);
+            }, 5000);
         }
-        if (rules.test && !rules.test(val)) {
-          setFieldError(id, rules.msg || "Invalid value.");
-          valid = false;
+
+        // ---------- Helpers ----------
+        const $ = (id) => document.getElementById(id);
+        const form = $("apply-form");
+        const status = $("form-status");
+        const iframe = document.getElementById("form-target");
+
+        // Flags for success toast after iframe submission
+        let submitInFlight = false;
+
+        function setErr(id, msg) {
+            const el = $(id); const err = document.querySelector(`[data-err="${id}"]`);
+            if (!el || !err) return;
+            el.setAttribute("aria-invalid", "true");
+            if (el.tagName !== "FIELDSET") el.classList.add("border-red-500", "ring-2", "ring-red-500");
+            err.textContent = msg; err.classList.remove("hidden");
         }
-      });
+        function clearErr(id) {
+            const el = $(id); const err = document.querySelector(`[data-err="${id}"]`);
+            if (!el || !err) return;
+            el.removeAttribute("aria-invalid");
+            if (el.tagName !== "FIELDSET") el.classList.remove("border-red-500", "ring-2", "ring-red-500");
+            err.textContent = ""; err.classList.add("hidden");
+        }
+        function urlParam(name, searchStr) {
+            const s = searchStr ?? location.search;
+            const p = new URLSearchParams(s || "");
+            return p.get(name) || "";
+        }
+        function scrollToFirstError() {
+            const firstInvalid = document.querySelector('[aria-invalid="true"]');
+            const firstErrNote = document.querySelector('[data-err]:not(.hidden)');
+            const target = firstInvalid || firstErrNote;
+            if (target && typeof target.scrollIntoView === "function") {
+                target.scrollIntoView({ behavior: "smooth", block: "center" });
+                if (firstInvalid && typeof firstInvalid.focus === "function") firstInvalid.focus({ preventScroll: true });
+            }
+        }
 
-      if (!valid) {
-        toast("Please fix the highlighted fields and try again.", "error");
-      }
-      return valid;
-    }
+        // Specific invalid-field toast
+        function toastFirstInvalid() {
+            let invalidEl = document.querySelector('[aria-invalid="true"]');
+            if (!invalidEl) {
+                const firstErrNote = document.querySelector('[data-err]:not(.hidden)');
+                if (firstErrNote) {
+                    const id = firstErrNote.getAttribute('data-err');
+                    invalidEl = id ? document.getElementById(id) : null;
+                }
+            }
+            if (!invalidEl) { toast("Please fix the highlighted fields and try again.", "error"); return; }
 
-    // ---- Numeric sanitizers ----
-    const ccEl = document.getElementById("phone_cc");
-    const phoneEl = document.getElementById("phone");
+            let fieldLabel = "";
+            if (invalidEl.tagName === "FIELDSET") {
+                const legend = invalidEl.querySelector("legend");
+                fieldLabel = legend ? legend.textContent.trim() : "";
+            } else if (invalidEl.id) {
+                const lbl = document.querySelector(`label[for="${invalidEl.id}"]`);
+                fieldLabel = lbl ? lbl.textContent.replace(/\s*\*+\s*$/, "").trim() : "";
+            }
+            if (!fieldLabel) fieldLabel = "This field";
 
-    if (ccEl) {
-      ccEl.addEventListener("beforeinput", (e) => {
-        if (e.data && !/[0-9+]/.test(e.data)) e.preventDefault();
-      });
-      ccEl.addEventListener("input", () => {
-        let v = ccEl.value;
-        if (!v.startsWith("+")) v = "+" + v.replace(/[^0-9]/g, "");
-        const digits = v.slice(1).replace(/\D/g, "");
-        ccEl.value = "+" + digits.slice(0, 4);
-      });
-    }
+            let errText = "";
+            if (invalidEl.id) {
+                const err = document.querySelector(`[data-err="${invalidEl.id}"]`);
+                errText = (err && err.textContent.trim()) ? err.textContent.trim() : "";
+            }
+            const msg = errText ? `${fieldLabel}: ${errText}` : `${fieldLabel} is required.`;
 
-    if (phoneEl) {
-      phoneEl.addEventListener("beforeinput", (e) => {
-        if (e.data && /\D/.test(e.data)) e.preventDefault();
-      });
-      phoneEl.addEventListener("input", () => {
-        phoneEl.value = (phoneEl.value || "").replace(/\D/g, "").slice(0, 15);
-      });
-    }
+            toast(msg, "error");
 
-    // Real-time clear on input/change
-    Object.keys(fields).forEach((id) => {
-      const el = document.getElementById(id);
-      if (!el) return;
-      el.addEventListener("input", () => clearFieldError(id));
-      el.addEventListener("change", () => clearFieldError(id));
-    });
+            if (typeof invalidEl.scrollIntoView === "function") {
+                invalidEl.scrollIntoView({ behavior: "smooth", block: "center" });
+            }
+            if (typeof invalidEl.focus === "function") {
+                invalidEl.focus({ preventScroll: true });
+            }
+        }
 
-    // ---- Submit handler (AJAX to FormSubmit) ----
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      status.textContent = "";
+        // ---------- Role-driven UI ----------
+        const role = decodeURIComponent(urlParam("role") || "General Application");
+        $("role").value = role;
+        $("page-title").textContent = role;
+        document.title = `${role} | NexusXperts`;
+        $("page-sub").textContent = `You're applying for “${role}”. Please complete all required fields.`;
 
-      if (!validateForm()) return;
+        const rs = $("role-specific");
+        const blocks = {
+            "Full Stack Engineer": `
+        <fieldset id="skills" role="group" aria-required="true" class="border-0 p-0 m-0">
+          <legend class="font-semibold mb-2">Tech Stack (check all that apply) <span class="text-red-600">*</span></legend>
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-sm">
+            ${["React", "Next.js", "TypeScript", "Node.js", "Python", "FastAPI", "Django", "PostgreSQL", "MySQL", "Docker", "Kubernetes", "AWS", "GCP", "CI/CD"].map(x => `
+              <label class="inline-flex items-center gap-2">
+                <input type="checkbox" name="Skills" value="${x}" class="h-4 w-4 border-gray-300 dark:border-gray-600">
+                <span>${x}</span>
+              </label>`).join("")}
+          </div>
+        </fieldset>
+        <p data-err="skills" class="mt-1 text-xs text-red-600 hidden"></p>
+        <div>
+          <label class="block text-sm mb-1">Strongest area <span class="text-red-600">*</span></label>
+          <input id="fs_strong" name="Strongest Area" type="text" required placeholder="e.g., Next.js + FastAPI" class="w-full h-12 px-4 bg-transparent border border-gray-300 dark:border-gray-600"/>
+          <p data-err="fs_strong" class="mt-1 text-xs text-red-600 hidden"></p>
+        </div>
+        <div>
+          <label class="block text-sm mb-1">Recent project link</label>
+          <input id="fs_proj" name="Recent Project URL" type="url" inputmode="url" placeholder="https://..." class="w-full h-12 px-4 bg-transparent border border-gray-300 dark:border-gray-600"/>
+          <p data-err="fs_proj" class="mt-1 text-xs text-red-600 hidden"></p>
+        </div>
+      `,
+            "Python Backend Developer": `
+        <fieldset id="be_skills" role="group" aria-required="true" class="border-0 p-0 m-0">
+          <legend class="font-semibold mb-2">Backend Experience (check all that apply) <span class="text-red-600">*</span></legend>
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-sm">
+            ${["FastAPI", "Django REST", "Celery", "Redis", "RabbitMQ", "PostgreSQL", "SQLAlchemy", "gRPC", "Auth (JWT/OAuth)", "Docker", "Kubernetes", "AWS", "GCP"].map(x => `
+              <label class="inline-flex items-center gap-2">
+                <input type="checkbox" name="Backend Skills" value="${x}" class="h-4 w-4 border-gray-300 dark:border-gray-600">
+                <span>${x}</span>
+              </label>`).join("")}
+          </div>
+        </fieldset>
+        <p data-err="be_skills" class="mt-1 text-xs text-red-600 hidden"></p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <div>
+            <label class="block text-sm mb-1">Async Python experience (years) <span class="text-red-600">*</span></label>
+            <input id="be_async" name="Async Experience (Years)" type="number" min="0" step="0.5" class="w-full h-12 px-4 bg-transparent border border-gray-300 dark:border-gray-600"/>
+            <p data-err="be_async" class="mt-1 text-xs text-red-600 hidden"></p>
+          </div>
+          <div>
+            <label class="block text-sm mb-1">Message queues used</label>
+            <input id="be_mq" name="Message Queues" type="text" placeholder="RabbitMQ, SQS, etc." class="w-full h-12 px-4 bg-transparent border border-gray-300 dark:border-gray-600"/>
+          </div>
+        </div>
+      `,
+            "SEO & Google Ads Specialist": `
+        <fieldset id="seo_skills" role="group" aria-required="true" class="border-0 p-0 m-0">
+          <legend class="font-semibold mb-2">Core Competencies <span class="text-red-600">*</span></legend>
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-sm">
+            ${["Technical SEO", "On-Page SEO", "Off-Page SEO", "GA4", "GSC", "GTM", "Google Ads (Search)", "Shopping Ads", "Display/Video", "Keyword Research", "Link Building", "Local SEO"].map(x => `
+              <label class="inline-flex items-center gap-2">
+                <input type="checkbox" name="SEO Skills" value="${x}" class="h-4 w-4 border-gray-300 dark:border-gray-600">
+                <span>${x}</span>
+              </label>`).join("")}
+          </div>
+        </fieldset>
+        <p data-err="seo_skills" class="mt-1 text-xs text-red-600 hidden"></p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <div>
+            <label class="block text-sm mb-1">Typical monthly Ads budget handled (USD) <span class="text-red-600">*</span></label>
+            <input id="ads_budget" name="Monthly Ads Budget (USD)" type="number" min="0" step="100" class="w-full h-12 px-4 bg-transparent border border-gray-300 dark:border-gray-600"/>
+            <p data-err="ads_budget" class="mt-1 text-xs text-red-600 hidden"></p>
+          </div>
+          <div>
+            <label class="block text-sm mb-1">Certifications</label>
+            <input id="certs" name="Certifications" type="text" placeholder="e.g., Google Ads, Analytics" class="w-full h-12 px-4 bg-transparent border border-gray-300 dark:border-gray-600"/>
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm mb-1">Case Study URL (optional)</label>
+          <input id="seo_case" name="Case Study URL" type="url" inputmode="url" placeholder="https://..." class="w-full h-12 px-4 bg-transparent border border-gray-300 dark:border-gray-600"/>
+          <p data-err="seo_case" class="mt-1 text-xs text-red-600 hidden"></p>
+        </div>
+      `
+        };
+        rs.innerHTML = blocks[role] || `
+      <div>
+        <label class="block text-sm mb-1">Primary Skillset / Tech Stack <span class="text-red-600">*</span></label>
+        <input id="gen_primary" name="Primary Skillset" type="text" placeholder="e.g., Frontend (React, Next.js) or Backend (FastAPI, PostgreSQL)" class="w-full h-12 px-4 bg-transparent border border-gray-300 dark:border-gray-600"/>
+        <p data-err="gen_primary" class="mt-1 text-xs text-red-600 hidden"></p>
+      </div>`;
 
-      // Loading state
-      submitText.textContent = "Sending...";
-      submitBtn.disabled = true;
-      submitBtn.classList.add("opacity-70", "cursor-not-allowed");
-
-      const data = new FormData(form);
-      const cc = (document.getElementById("phone_cc").value || "").trim();
-      const num = (document.getElementById("phone").value || "").trim();
-      data.append("phone_full", `${cc} ${num}`);
-
-      try {
-        const response = await fetch(form.action, {
-          method: form.method,
-          body: data,
-          headers: { Accept: "application/json" },
+        // ---------- Date min (today) ----------
+        function setAvailabilityMin() {
+            const el = document.getElementById('availability');
+            if (!el) return;
+            const pad = n => String(n).padStart(2, '0');
+            const now = new Date();
+            const yyyy = now.getFullYear();
+            const mm = pad(now.getMonth() + 1);
+            const dd = pad(now.getDate());
+            const today = `${yyyy}-${mm}-${dd}`;
+            el.setAttribute('min', today);
+            if (el.value && el.value < today) el.value = today;
+        }
+        setAvailabilityMin();
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible') setAvailabilityMin();
+        });
+        document.getElementById('availability')?.addEventListener('input', (e) => {
+            const min = e.target.getAttribute('min') || '';
+            if (min && e.target.value && e.target.value < min) e.target.value = min;
         });
 
-        if (response.ok) {
-          toast("Thanks! Your message has been sent.", "success");
-          status.textContent = "Thanks for your message! We’ll get back to you soon.";
-          form.reset();
-          document.getElementById("phone_cc").value = "+92";
-        } else {
-          toast("Submission failed. Please try again in a moment.", "error");
-          status.textContent = "Oops! Something went wrong. Please try again.";
+        // ---------- Validation ----------
+        const MIN_BYTES = 1 * 1024;           // 1 KB
+        const MAX_BYTES = 5 * 1024 * 1024;    // 5 MB
+
+        const validators = {
+            first_name: v => v.length > 0 || "This field is required.",
+            last_name: v => v.length > 0 || "This field is required.",
+            email: v => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v) || "Enter a valid email.",
+            phone_cc: v => /^\+\d{1,4}$/.test(v) || "Use + and 1–4 digits (e.g., +1, +44, +92).",
+            phone: v => /^\d{6,15}$/.test(v) || "Enter 6–15 digits (no spaces).",
+            experience: v => (v !== "" && Number(v) >= 0) || "Enter a valid number.",
+            availability: v => {
+                if (!v) return "This field is required.";
+                const today = new Date(); today.setHours(0, 0, 0, 0);
+                const d = new Date(v); return d >= today || "Date cannot be in the past.";
+            },
+            location: v => v.length > 0 || "This field is required.",
+            linkedin: v => (!v || /^https?:\/\//i.test(v)) || "Enter a valid URL.",
+            portfolio: v => (!v || /^https?:\/\//i.test(v)) || "Enter a valid URL.",
+            salary: v => (/^\d+$/.test(v.trim())) || "Enter a numeric value (digits only).",
+            cover_letter: v => v.length > 0 || "This field is required.",
+            recent_projects: v => v.split(/\n/).filter(l => l.trim().length > 0).length >= 2 || "List at least 2 projects.",
+            resume_file: file => {
+                if (!file) return "Resume is required.";
+                const ok = [
+                    "application/pdf",
+                    "application/msword",
+                    "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                ];
+                const name = (file.name || "").toLowerCase();
+                const extOK = /\.(pdf|doc|docx)$/.test(name);
+                if (!(ok.includes(file.type) || extOK)) return "Allowed: PDF/DOC/DOCX.";
+                if (file.size < MIN_BYTES) return "File too small (min 1 KB).";
+                if (file.size > MAX_BYTES) return "File too large (max 5 MB).";
+                return true;
+            },
+            consent: v => v === true || "Consent is required."
+        };
+
+        function validateField(id) {
+            clearErr(id);
+            const el = $(id);
+            if (!el) return true;
+            const v = (el.type === "checkbox") ? el.checked : (el.value || "").trim();
+            const rule = validators[id];
+            if (!rule) return true;
+            const res = rule(el.type === "file" ? el.files[0] : v);
+            if (res !== true) { setErr(id, res); return false; }
+            return true;
         }
-      } catch (err) {
-        toast("Network error. Please check your connection.", "warn");
-        status.textContent = "Network error. Please check your connection.";
-      } finally {
-        submitText.textContent = "Send Message";
-        submitBtn.disabled = false;
-        submitBtn.classList.remove("opacity-70", "cursor-not-allowed");
-      }
-    });
-  </script>
+
+        function validateRoleSpecific() {
+            if (role === "Full Stack Engineer") {
+                const any = [...document.querySelectorAll('input[name="Skills"]:checked')].length > 0;
+                if (!any) { setErr("skills", "Select at least one skill."); } else { clearErr("skills"); }
+                if (!($("fs_strong")?.value.trim())) { setErr("fs_strong", "This field is required."); } else { clearErr("fs_strong"); }
+                return any && Boolean($("fs_strong")?.value.trim());
+            } else if (role === "Python Backend Developer") {
+                const any = [...document.querySelectorAll('input[name="Backend Skills"]:checked')].length > 0;
+                if (!any) { setErr("be_skills", "Select at least one skill."); } else { clearErr("be_skills"); }
+                const v = $("be_async")?.value;
+                if (v === "" || Number(v) < 0) { setErr("be_async", "Enter a valid number."); } else { clearErr("be_async"); }
+                return any && !(v === "" || Number(v) < 0);
+            } else if (role === "SEO & Google Ads Specialist") {
+                const any = [...document.querySelectorAll('input[name="SEO Skills"]:checked')].length > 0;
+                if (!any) { setErr("seo_skills", "Select at least one competency."); } else { clearErr("seo_skills"); }
+                const b = $("ads_budget")?.value;
+                if (b === "" || Number(b) < 0) { setErr("ads_budget", "Enter a valid budget."); } else { clearErr("ads_budget"); }
+                const caseUrl = $("seo_case")?.value.trim();
+                if (caseUrl && !/^https?:\/\//i.test(caseUrl)) { setErr("seo_case", "Enter a valid URL."); } else { clearErr("seo_case"); }
+                return any && !(b === "" || Number(b) < 0) && !(caseUrl && !/^https?:\/\//i.test(caseUrl));
+            } else {
+                if (!($("gen_primary")?.value.trim())) { setErr("gen_primary", "This field is required."); return false; }
+                clearErr("gen_primary");
+                return true;
+            }
+        }
+
+        // Live size feedback
+        $("resume_file")?.addEventListener("change", () => {
+            const f = $("resume_file").files?.[0];
+            if (!f) return;
+            if (f.size < MIN_BYTES) setErr("resume_file", "File too small (min 1 KB).");
+            else if (f.size > MAX_BYTES) setErr("resume_file", "File too large (max 5 MB).");
+            else clearErr("resume_file");
+        });
+
+        // Clear errors on input/change
+        ["first_name", "last_name", "email", "phone_cc", "phone", "experience", "availability", "location", "linkedin", "portfolio", "salary", "cover_letter", "recent_projects"]
+            .forEach(id => { $(id)?.addEventListener("input", () => clearErr(id)); $(id)?.addEventListener("change", () => clearErr(id)); });
+        document.getElementById("consent")?.addEventListener("change", () => clearErr("consent"));
+        document.addEventListener("change", (e) => {
+            if (e.target?.name === "Skills") { if ([...document.querySelectorAll('input[name="Skills"]:checked')].length) clearErr("skills"); }
+            if (e.target?.name === "Backend Skills") { if ([...document.querySelectorAll('input[name="Backend Skills"]:checked')].length) clearErr("be_skills"); }
+            if (e.target?.name === "SEO Skills") { if ([...document.querySelectorAll('input[name="SEO Skills"]:checked')].length) clearErr("seo_skills"); }
+        });
+
+        // number inputs guard
+        function guardNumberInput(ev) {
+            const el = ev.target;
+            if (el.tagName !== "INPUT" || el.type !== "number") return;
+            const k = ev.key;
+            const stepAttr = el.getAttribute("step") || "";
+            const allowDot = stepAttr.includes(".");
+            const blocked = ["e", "E", "+", "-"].includes(k) || (!allowDot && k === ".");
+            if (blocked) ev.preventDefault();
+        }
+        document.addEventListener("keydown", guardNumberInput, true);
+
+        // digits-only helpers
+        function digitsOnlyInput(el) { el.value = (el.value || "").replace(/\D+/g, ""); }
+        document.getElementById("salary")?.addEventListener("input", () => digitsOnlyInput(document.getElementById("salary")));
+        document.getElementById("phone")?.addEventListener("input", () => digitsOnlyInput(document.getElementById("phone")));
+        document.getElementById("phone_cc")?.addEventListener("input", () => {
+            let v = document.getElementById("phone_cc").value || "";
+            v = v.replace(/^\+?/, "+");
+            v = "+" + v.slice(1).replace(/\D+/g, "").slice(0, 4);
+            document.getElementById("phone_cc").value = v.slice(0, 5);
+        });
+
+        // availability min refresh
+        document.getElementById("availability")?.addEventListener("focus", () => setAvailabilityMin());
+
+        // Submit: validate, then let the browser POST to iframe (keeps files)
+        form.addEventListener("submit", (e) => {
+            if (form.querySelector('input[name="_honey"]')?.value) { e.preventDefault(); return; } // bot honeypot
+
+            const ids = ["first_name", "last_name", "email", "phone_cc", "phone", "experience", "availability", "location", "linkedin", "portfolio", "salary", "recent_projects", "cover_letter", "resume_file", "consent"];
+            let ok = true;
+            ids.forEach(id => { if (!validateField(id)) ok = false; });
+            if (!validateRoleSpecific()) ok = false;
+
+            // EXTRA hard guard for consent (explicit)
+            const consentEl = document.getElementById("consent");
+            if (consentEl && !consentEl.checked) {
+                setErr("consent", "Consent is required.");
+                ok = false;
+            }
+
+            const subj = document.querySelector('#_subject');
+            if (subj) subj.value = `New Job Application – ${role} – NexusXperts`;
+            const cc = document.getElementById("phone_cc")?.value?.trim() || "";
+            const ph = document.getElementById("phone")?.value?.trim() || "";
+            document.getElementById("phone_full").value = `${cc} ${ph}`.trim();
+
+            if (!ok) {
+                e.preventDefault();
+                status.textContent = "Please fix the highlighted fields and try again.";
+                toastFirstInvalid();
+                scrollToFirstError();
+            } else {
+                status.textContent = "";
+                submitInFlight = true; // next iframe load => success toast
+            }
+        });
+
+        // Success toast after iframe loads (no page redirect)
+        iframe.addEventListener("load", () => {
+            if (!submitInFlight) return;
+            toast("Application submitted successfully. Thank you!", "success");
+            form.reset();
+
+            // restore defaults wiped by reset
+            document.getElementById("phone_cc").value = "+92";
+            // RE-APPLY the role value so it doesn't disappear
+            document.getElementById("role").value = role;
+
+            // refresh min(date)
+            (function refreshMin() {
+                const el = document.getElementById('availability');
+                if (el) {
+                    const d = new Date(); d.setHours(0, 0, 0, 0);
+                    const y = d.getFullYear(), m = String(d.getMonth() + 1).padStart(2, '0'), da = String(d.getDate()).padStart(2, '0');
+                    el.min = `${y}-${m}-${da}`;
+                }
+            })();
+
+            // prevent duplicate toasts
+            iframe.src = "about:blank";
+            submitInFlight = false;
+        });
+
+    </script>
 </body>
 
 </html>
